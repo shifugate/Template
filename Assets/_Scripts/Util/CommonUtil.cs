@@ -54,13 +54,5 @@ namespace Project.Util
                     error,
                     LanguageManagerToken.common.close_token);
         }
-
-        public static class Constants
-        {
-            public const string KEY = "kdfgujkdhrfg95-545gfvhjhjf-dfgnjkbvg0-76q3hsd";
-            //public const string API_URL = "http://192.168.0.75/api/";
-            //public const string API_URL = "https://api.estima.com/api/";
-            public const string API_URL = "https://api.clamofmasks.com/api/";
-        }
     }
 }
