@@ -99,33 +99,33 @@ namespace Project.Manager.Language
             return $"{language}: {group}: {key}";
         }
 
-        public List<string> GetGroup(string group)
-        {
-            try
-            {
-                return contents[language][group].Values.ToList();
-            }
-            catch (Exception ex)
-            {
-                SystemUtil.Log(GetType(), $"{language}: {group} - {ex}", SystemUtil.LogType.Warning);
-            }
+        public Dictionary<string, string> GetGroup(string group)
+		{
+			try
+			{
+				return contents[language][group];
+			}
+			catch (Exception ex)
+			{
+				SystemUtil.Log(GetType(), $"{language}: {group} - {ex}", SystemUtil.LogType.Warning);
+			}
 
-            return new List<string>();
-        }
+			return new Dictionary<string, string>();
+		}
 
-        public List<string> GetGroup(string language, string group)
-        {
-            try
-            {
-                return contents[language][group].Values.ToList();
-            }
-            catch (Exception ex)
-            {
-                SystemUtil.Log(GetType(), $"{language}: {group} - {ex}", SystemUtil.LogType.Warning);
-            }
+		public Dictionary<string, string> GetGroup(string language, string group)
+		{
+			try
+			{
+				return contents[language][group];
+			}
+			catch (Exception ex)
+			{
+				SystemUtil.Log(GetType(), $"{language}: {group} - {ex}", SystemUtil.LogType.Warning);
+			}
 
-            return new List<string>();
-        }
+			return new Dictionary<string, string>();
+		}
 
         public void AddLanguageMap(LanguageManagerMap map)
         {
