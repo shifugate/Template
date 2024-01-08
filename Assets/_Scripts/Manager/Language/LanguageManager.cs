@@ -71,6 +71,21 @@ namespace Project.Manager.Language
             LanguageManagerEvent.LanguageManagerEvent_Updated?.Invoke();
         }
 
+        public bool HasLanguage()
+        {
+            return PlayerPrefs.HasKey("language");
+        }
+
+        public bool HasTranslation(string group, string key)
+        {
+            return contents.ContainsKey(language) && contents[language].ContainsKey(group) && contents[language][group].ContainsKey(key);
+        }
+
+        public bool HasTranslation(string language, string group, string key)
+        {
+            return contents.ContainsKey(language) && contents[language].ContainsKey(group) && contents[language][group].ContainsKey(key);
+        }
+
         public string GetTranslation(string group, string key)
         {
             try
