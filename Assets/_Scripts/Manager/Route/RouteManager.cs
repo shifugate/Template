@@ -77,7 +77,7 @@ namespace Project.Manager.Route
             {
                 initialized = true;
 
-                modelBase = FindObjectOfType<ModelBase>(true);
+                modelBase = FindAnyObjectByType<ModelBase>(FindObjectsInactive.Include);
 
                 while (modelBase.CanvasGroup == null)
                     await Task.Yield();
@@ -91,7 +91,7 @@ namespace Project.Manager.Route
 
             this.args = args;
 
-            modelBase = FindObjectOfType<ModelBase>(true);
+            modelBase = FindAnyObjectByType<ModelBase>(FindObjectsInactive.Include);
 
             transition = await ContentUtil.LoadContent<RouterManagerBaseTransition>($"Transition/RouterManagerFadeTransition.prefab", null);
             transition.Initialize();
@@ -139,8 +139,7 @@ namespace Project.Manager.Route
             yield return ContentUtil.LoadScene($"{route}.unity", (SceneInstance scene) => loadedScene = scene, failCallback, progressionCallback, true);
             yield return loadedScene.ActivateAsync();
 
-
-            modelBase = FindObjectOfType<ModelBase>(true);
+            modelBase = FindAnyObjectByType<ModelBase>(FindObjectsInactive.Include);
             modelBase.args = args;
 
             completeCallback(loadedScene);
