@@ -1,17 +1,33 @@
 ﻿using DG.Tweening;
-using System;
-using System.Collections.Generic;
 using Project.Manager.Language.Token;
 using Project.Manager.Popup;
 using Project.Manager.Popup.Modal;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Project.Util
 {
-    public class CommonUtil
+    public static class CommonUtil
     {
+        private static string dataPath = Application.dataPath;
+        public static string DataPath { get { return dataPath.Replace("/Assets", "").Replace("\\Assets", ""); } }
+
         public static Tweener SetValue(int currentValue, int newValue, float delay = 0, float time = 1, Action<int> valueCallback = null)
         {
             int value = currentValue;
+
+            Tweener tweener = DOTween.To(() => value, result => value = result, newValue, time)
+                .SetDelay(delay)
+                .OnUpdate(() => valueCallback?.Invoke(value))
+                .OnComplete(() => valueCallback?.Invoke(value));
+
+            return tweener;
+        }
+
+        public static Tweener SetValue(float currentValue, int newValue, float delay = 0, float time = 1, Action<float> valueCallback = null)
+        {
+            float value = currentValue;
 
             Tweener tweener = DOTween.To(() => value, result => value = result, newValue, time)
                 .SetDelay(delay)
@@ -35,7 +51,7 @@ namespace Project.Util
         {
             int index = list.Count;
 
-            Random random = new Random(seed);
+            System.Random random = new System.Random(seed);
 
             while (index > 1)
             {
