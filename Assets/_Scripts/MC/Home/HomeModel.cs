@@ -1,6 +1,6 @@
-﻿using Project.MVC.__Base;
+﻿using Project.MC.__Base;
 
-namespace Project.MVC.Home
+namespace Project.MC.Home
 {
     public class HomeModel : ModelBase
     {

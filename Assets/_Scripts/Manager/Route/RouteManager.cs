@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using Project.Manager.Route.Transition.Base;
-using Project.MVC.__Base;
+using Project.MC.__Base;
 using Project.Util;
 
 namespace Project.Manager.Route

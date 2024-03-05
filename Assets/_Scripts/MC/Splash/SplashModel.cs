@@ -1,6 +1,6 @@
-﻿using Project.MVC.__Base;
+﻿using Project.MC.__Base;
 
-namespace Project.MVC.Splash
+namespace Project.MC.Splash
 {
     public class SplashModel : ModelBase
     {

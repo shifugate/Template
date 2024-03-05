@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Project.MVC.__Base
+namespace Project.MC.__Base
 {
     public class ModelBase : MonoBehaviour
     {
