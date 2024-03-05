@@ -77,13 +77,6 @@ namespace Project.Manager.Route
             {
                 initialized = true;
 
-                modelBase = FindAnyObjectByType<ModelBase>(FindObjectsInactive.Include);
-
-                while (modelBase.CanvasGroup == null)
-                    await Task.Yield();
-
-                modelBase.CanvasGroup.alpha = 1;
-
                 return;
             }
 

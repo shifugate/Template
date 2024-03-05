@@ -51,27 +51,14 @@ namespace Project.Manager.Route.Transition
 
         public override void AnimationIn(Action callback)
         {
-            RouteManager.Instance.ModelBase.CanvasGroup.DOKill();
-            RouteManager.Instance.ModelBase.CanvasGroup.DOFade(0, 0.25f)
-                .OnComplete(() => callback?.Invoke());
-
-            /*group.DOKill();
+            group.DOKill();
             group.DOFade(1, 0.25f)
-                .OnComplete(() => callback?.Invoke());*/
+                .OnComplete(() => callback?.Invoke());
         }
 
         public override void AnimationOut(Action callback)
         {
-            RouteManager.Instance.ModelBase.CanvasGroup.DOKill();
-            RouteManager.Instance.ModelBase.CanvasGroup.DOFade(1, 0.25f)
-               .OnComplete(() =>
-               {
-                   callback();
-
-                   Destroy(gameObject);
-               });
-
-            /*group.DOKill();
+            group.DOKill();
             group.DOFade(0, 0.25f)
                 .SetDelay(1)
                 .OnComplete(() =>
@@ -79,7 +66,7 @@ namespace Project.Manager.Route.Transition
                     callback();
 
                     Destroy(gameObject);
-                });*/
+                });
         }
     }
 }
