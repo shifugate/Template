@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Project.Manager.Keyboard.Component.Keys;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -84,29 +85,24 @@ namespace Project.Util
 
         public static async Task<T> LoadContent<T>(string file)
         {
-            try
-            {
-                T asset = await Addressables.LoadAssetAsync<T>($"Assets/_Addressables/{file}").Task;
+            GameObject go = await Addressables.LoadAssetAsync<GameObject>($"Assets/_Addressables/{file}").Task;
+            go.name = typeof(T).Name;
 
-                return asset;
-            }
-            catch (Exception)
-            {
+            if (typeof(T).Equals(typeof(GameObject)))
+                return (T)Convert.ChangeType(go, typeof(T));
 
-            }
-
-            return default(T);
+            return go.GetComponent<T>();
         }
 
         public static IEnumerator LoadContent<T>(string file, Action<T> completeCallback, Action failCallback, Action<float> progressionCallback = null)
         {
-            AsyncOperationHandle<T> handle = default(AsyncOperationHandle<T>);
+            AsyncOperationHandle<GameObject> handle = default(AsyncOperationHandle<GameObject>);
 
             Exception error = null;
 
             try
             {
-                handle = Addressables.LoadAssetAsync<T>($"Assets/_Addressables/{file}");
+                handle = Addressables.LoadAssetAsync<GameObject>($"Assets/_Addressables/{file}");
             }
             catch (Exception ex)
             {
@@ -138,7 +134,16 @@ namespace Project.Util
 
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
-                completeCallback?.Invoke(handle.Result);
+                handle.Result.name = typeof(T).Name;
+
+                if (typeof(T).Equals(typeof(GameObject)))
+                {
+                    completeCallback?.Invoke((T)Convert.ChangeType(handle.Result, typeof(T)));
+
+                    yield break;
+                }
+
+                completeCallback?.Invoke(handle.Result.GetComponent<T>());
 
                 yield break;
             }
