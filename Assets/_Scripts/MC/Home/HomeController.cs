@@ -1,6 +1,6 @@
-﻿using Project.MC.__Base;
+﻿using Assets._Scripts.MC.__Base;
 
-namespace Project.MC.Home
+namespace Assets._Scripts.MC.Home
 {
     public class HomeController : ControllerBase<HomeModel>
     {

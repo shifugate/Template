@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using UnityEngine;
-using Project.Manager.Setting.Model;
+using Assets._Scripts.Manager.Setting.Model;
 using System.IO;
 
-namespace Project.Manager.Setting
+namespace Assets._Scripts.Manager.Setting
 {
     public class SettingManager : MonoBehaviour
     {

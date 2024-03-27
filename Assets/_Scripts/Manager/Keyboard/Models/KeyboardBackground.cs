@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Project.Manager.Keyboard.Models
+namespace Assets._Scripts.Manager.Keyboard.Models
 {
     public class KeyboardBackground
     {

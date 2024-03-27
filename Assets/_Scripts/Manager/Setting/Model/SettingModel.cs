@@ -1,4 +1,4 @@
-﻿namespace Project.Manager.Setting.Model
+﻿namespace Assets._Scripts.Manager.Setting.Model
 {
     public class SettingModel
     {

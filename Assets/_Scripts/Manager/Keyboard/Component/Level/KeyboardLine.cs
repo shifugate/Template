@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Project.Manager.Keyboard.Component.Keys;
+using Assets._Scripts.Manager.Keyboard.Component.Keys;
 
-namespace Project.Manager.Keyboard.Component.Level
+namespace Assets._Scripts.Manager.Keyboard.Component.Level
 {
     class KeyboardLine
     {

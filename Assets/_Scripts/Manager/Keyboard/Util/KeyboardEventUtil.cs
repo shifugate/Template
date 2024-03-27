@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Project.Manager.Keyboard.Util
+namespace Assets._Scripts.Manager.Keyboard.Util
 {
     public static class KeyboardEventUtil
     {

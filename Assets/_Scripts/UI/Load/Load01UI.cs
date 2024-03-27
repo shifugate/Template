@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Project.UI.Load
+namespace Assets._Scripts.UI.Load
 {
     public class Load01UI : MonoBehaviour
     {

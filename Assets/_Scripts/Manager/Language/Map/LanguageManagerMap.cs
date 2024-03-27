@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Project.Manager.Language.Map
+namespace Assets._Scripts.Manager.Language.Map
 {
     public class LanguageManagerMap : MonoBehaviour
     {

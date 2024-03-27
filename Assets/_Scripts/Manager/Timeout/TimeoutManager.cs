@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using Project.Manager.Route;
-using Project.Manager.Setting;
+using Assets._Scripts.Manager.Route;
+using Assets._Scripts.Manager.Setting;
 
-namespace Project.Manager.Timeout
+namespace Assets._Scripts.Manager.Timeout
 {
     public class TimeoutManager : MonoBehaviour
     {

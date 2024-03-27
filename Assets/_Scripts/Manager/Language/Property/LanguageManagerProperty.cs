@@ -1,14 +1,14 @@
 ﻿#if UNITY_EDITOR
-using Project.Manager.Language.Map;
-using Project.Manager.Language.Token;
+using Assets._Scripts.Manager.Language.Map;
+using Assets._Scripts.Manager.Language.Token;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using Project.Manager.Language.Attributes;
+using Assets._Scripts.Manager.Language.Attributes;
 
-namespace Project.Manager.Language.Property
+namespace Assets._Scripts.Manager.Language.Property
 {
     [CustomEditor(typeof(LanguageManagerMap))]
     public class LanguageManagerProperty : Editor

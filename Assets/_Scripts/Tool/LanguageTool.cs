@@ -5,7 +5,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace Project.Tool
+namespace Assets._Scripts.Tool
 {
     public class LanguageTool : EditorWindow
     {
@@ -37,9 +37,9 @@ namespace Project.Tool
             Dictionary<string, Dictionary<string, string>> json = JsonConvert
                 .DeserializeObject<Dictionary<string, Dictionary<string, string>>>(File.ReadAllText($"{files[0]}"));
 
-            string result = "using Project.Manager.Language.Attributes;\n\n";
+            string result = "using Assets._Scripts.Manager.Language.Attributes;\n\n";
             result += "\n";
-            result += "namespace Project.Manager.Language.Token\n{\n";
+            result += "namespace Assets._Scripts.Manager.Language.Token\n{\n";
             result += "    public static class LanguageManagerToken\n    {\n";
 
             int count = 0;

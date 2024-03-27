@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Project.Util
+namespace Assets._Scripts.Util
 {
     public static class FormUtil
     {

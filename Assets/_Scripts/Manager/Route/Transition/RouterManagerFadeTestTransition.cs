@@ -1,11 +1,11 @@
-﻿using Project.Manager.Route.Transition.Base;
+﻿using Assets._Scripts.Manager.Route.Transition.Base;
 using System;
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
-using Project.UI.Load;
+using Assets._Scripts.UI.Load;
 
-namespace Project.Manager.Route.Transition
+namespace Assets._Scripts.Manager.Route.Transition
 {
     public class RouterManagerFadeTestTransition : RouterManagerBaseTransition
     {

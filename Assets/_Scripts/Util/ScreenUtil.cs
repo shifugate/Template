@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine;
 
-namespace Project.Util
+namespace Assets._Scripts.Util
 {
     public static class ScreenUtil
     {

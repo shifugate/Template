@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Project.Manager.Language.Event
+namespace Assets._Scripts.Manager.Language.Event
 {
     public static class LanguageManagerEvent
     {

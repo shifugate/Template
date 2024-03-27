@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Project.Manager.Popup.Modal.Base
+namespace Assets._Scripts.Manager.Popup.Modal.Base
 {
     public class PopupBaseModalShow : UnityEvent<PopupBaseModal> { }
     public class PopupBaseModalHide : UnityEvent<PopupBaseModal> { }

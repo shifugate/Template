@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine.UI;
 using UnloopLib.Keyboards.Util;
-using Project.Manager.Keyboard.Models;
+using Assets._Scripts.Manager.Keyboard.Models;
 
-namespace Project.Manager.Keyboard
+namespace Assets._Scripts.Manager.Keyboard
 {
     [DefaultExecutionOrder(-1000)]
     public class KeyboardManager : MonoBehaviour
@@ -23,7 +23,7 @@ namespace Project.Manager.Keyboard
         public List<InputField> fields = new List<InputField>();
         public List<string> types = new List<string>();
 
-        public Project.Manager.Keyboard.Component.Keyboard keyboard;
+        public Assets._Scripts.Manager.Keyboard.Component.Keyboard keyboard;
 
         private InputField lastField;
         public InputField LastField { get { return lastField; } }
@@ -130,7 +130,7 @@ namespace Project.Manager.Keyboard
 
         private void LoadKeyboard()
         {
-            keyboard = gameObject.AddComponent<Project.Manager.Keyboard.Component.Keyboard>();
+            keyboard = gameObject.AddComponent<Assets._Scripts.Manager.Keyboard.Component.Keyboard>();
             keyboard.KeyboardIntialize(xml, images, backgrounds);
         }
 

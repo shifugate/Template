@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-namespace Project.Manager.Popup.Modal.Base
+namespace Assets._Scripts.Manager.Popup.Modal.Base
 {
     public class PopupBaseAlphaModal : PopupBaseModal
     {

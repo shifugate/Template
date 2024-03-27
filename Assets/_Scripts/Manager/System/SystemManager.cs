@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using Project.Manager.System.Support;
-using Project.Manager.Setting;
+using Assets._Scripts.Manager.System.Support;
+using Assets._Scripts.Manager.Setting;
 
-namespace Project.Manager.System
+namespace Assets._Scripts.Manager.System
 {
     public class SystemManager : MonoBehaviour
     {

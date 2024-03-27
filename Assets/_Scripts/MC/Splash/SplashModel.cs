@@ -1,6 +1,6 @@
-﻿using Project.MC.__Base;
+﻿using Assets._Scripts.MC.__Base;
 
-namespace Project.MC.Splash
+namespace Assets._Scripts.MC.Splash
 {
     public class SplashModel : ModelBase
     {

@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 
-namespace Project.Util
+namespace Assets._Scripts.Util
 {
     public static class ContentUtil
     {

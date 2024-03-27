@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Project.Manager.System.Support
+namespace Assets._Scripts.Manager.System.Support
 {
     public class SystemManagerFPSDisplaySupport : MonoBehaviour
     {

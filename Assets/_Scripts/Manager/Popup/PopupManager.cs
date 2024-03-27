@@ -1,10 +1,10 @@
 ﻿using DG.Tweening;
-using Project.Manager.Popup.Modal.Base;
+using Assets._Scripts.Manager.Popup.Modal.Base;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Project.Manager.Popup
+namespace Assets._Scripts.Manager.Popup
 {
     public class PopupManager : MonoBehaviour
     {

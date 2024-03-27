@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
-using Project.Manager.Route.Transition.Base;
-using Project.MC.__Base;
-using Project.Util;
+using Assets._Scripts.Manager.Route.Transition.Base;
+using Assets._Scripts.MC.__Base;
+using Assets._Scripts.Util;
 
-namespace Project.Manager.Route
+namespace Assets._Scripts.Manager.Route
 {
     public class RouteManager : MonoBehaviour
     {

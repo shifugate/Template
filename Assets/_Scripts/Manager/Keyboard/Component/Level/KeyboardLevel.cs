@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Project.Manager.Keyboard.Component.Level
+namespace Assets._Scripts.Manager.Keyboard.Component.Level
 {
     class KeyboardLevel
     {

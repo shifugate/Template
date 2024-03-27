@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Project.Manager.Keyboard.Models;
+using Assets._Scripts.Manager.Keyboard.Models;
 
-namespace Project.Manager.Keyboard.Component.Keys
+namespace Assets._Scripts.Manager.Keyboard.Component.Keys
 {
     public class Key : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {

@@ -1,4 +1,4 @@
-﻿namespace Project.Manager.Keyboard.Component.Keys
+﻿namespace Assets._Scripts.Manager.Keyboard.Component.Keys
 {
     public class Accent
     {

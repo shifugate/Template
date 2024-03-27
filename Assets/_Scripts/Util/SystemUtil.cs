@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Project.Util
+namespace Assets._Scripts.Util
 {
     public static class SystemUtil
     {

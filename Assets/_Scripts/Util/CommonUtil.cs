@@ -1,12 +1,12 @@
 ﻿using DG.Tweening;
-using Project.Manager.Language.Token;
-using Project.Manager.Popup;
-using Project.Manager.Popup.Modal;
+using Assets._Scripts.Manager.Language.Token;
+using Assets._Scripts.Manager.Popup;
+using Assets._Scripts.Manager.Popup.Modal;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Project.Util
+namespace Assets._Scripts.Util
 {
     public static class CommonUtil
     {

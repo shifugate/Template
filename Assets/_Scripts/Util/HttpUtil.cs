@@ -2,7 +2,7 @@
 using System.Net.Http;
 using UnityEngine.Networking;
 
-namespace Project.Util
+namespace Assets._Scripts.Util
 {
     public static class HttpUtil
     {

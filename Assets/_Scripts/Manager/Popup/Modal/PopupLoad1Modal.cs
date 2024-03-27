@@ -1,8 +1,8 @@
 ﻿using TMPro;
 using UnityEngine;
-using Project.Manager.Popup.Modal.Base;
+using Assets._Scripts.Manager.Popup.Modal.Base;
 
-namespace Project.Manager.Popup.Modal
+namespace Assets._Scripts.Manager.Popup.Modal
 {
     public class PopupLoad1Modal : PopupBaseAlphaModal
     {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Project.Manager.Keyboard.Util
+namespace Assets._Scripts.Manager.Keyboard.Util
 {
     public class UnloopKeyboardMapInput : MonoBehaviour
     {

@@ -4,7 +4,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace Project.Tool
+namespace Assets._Scripts.Tool
 {
     public class PersistenceTool : EditorWindow
     {

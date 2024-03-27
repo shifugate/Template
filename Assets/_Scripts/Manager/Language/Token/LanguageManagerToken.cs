@@ -1,7 +1,7 @@
-using Project.Manager.Language.Attributes;
+using Assets._Scripts.Manager.Language.Attributes;
 
 
-namespace Project.Manager.Language.Token
+namespace Assets._Scripts.Manager.Language.Token
 {
     public static class LanguageManagerToken
     {

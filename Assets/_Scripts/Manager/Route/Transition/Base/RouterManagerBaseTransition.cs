@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Project.Manager.Route.Transition.Base
+namespace Assets._Scripts.Manager.Route.Transition.Base
 {
     public class RouterManagerBaseTransition : MonoBehaviour
     {

@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using Project.Manager.Language.Map;
-using Project.Util;
-using Project.Manager.Language.Event;
+using Assets._Scripts.Manager.Language.Map;
+using Assets._Scripts.Util;
+using Assets._Scripts.Manager.Language.Event;
 
-namespace Project.Manager.Language
+namespace Assets._Scripts.Manager.Language
 {
     public class LanguageManager : MonoBehaviour
     {

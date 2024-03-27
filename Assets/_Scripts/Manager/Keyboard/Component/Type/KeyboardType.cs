@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Project.Manager.Keyboard.Component.Keys;
-using Project.Manager.Keyboard.Component.Level;
-using Project.Manager.Keyboard.Models;
-using Project.Manager.Keyboard.Util;
+using Assets._Scripts.Manager.Keyboard.Component.Keys;
+using Assets._Scripts.Manager.Keyboard.Component.Level;
+using Assets._Scripts.Manager.Keyboard.Models;
+using Assets._Scripts.Manager.Keyboard.Util;
 
-namespace Project.Manager.Keyboard.Component.Type
+namespace Assets._Scripts.Manager.Keyboard.Component.Type
 {
     class KeyboardType : MonoBehaviour
     {

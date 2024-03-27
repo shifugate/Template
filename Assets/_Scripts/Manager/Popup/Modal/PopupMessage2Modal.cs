@@ -1,11 +1,11 @@
-﻿using Project.Manager.Popup.Modal.Base;
+﻿using Assets._Scripts.Manager.Popup.Modal.Base;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
 
-namespace Project.Manager.Popup.Modal
+namespace Assets._Scripts.Manager.Popup.Modal
 {
     public class PopupMessage2Modal : PopupBaseModal
     {

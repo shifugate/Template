@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Project.MC.__Base
+namespace Assets._Scripts.MC.__Base
 {
     public class ControllerBase<TModel> : MonoBehaviour
     {

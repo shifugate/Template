@@ -1,15 +1,15 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using Project.Manager.Language;
-using Project.Manager.Route;
-using Project.Manager.Setting;
-using Project.Manager.System;
-using Project.Manager.Keyboard;
-using Project.Manager.Timeout;
-using Project.Manager.Popup;
+using Assets._Scripts.Manager.Language;
+using Assets._Scripts.Manager.Route;
+using Assets._Scripts.Manager.Setting;
+using Assets._Scripts.Manager.System;
+using Assets._Scripts.Manager.Keyboard;
+using Assets._Scripts.Manager.Timeout;
+using Assets._Scripts.Manager.Popup;
 
-namespace Project.Manager
+namespace Assets._Scripts.Manager
 {
     public class InitializerManagerComplete : UnityEvent { }
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Project.Manager.Language.Attributes
+namespace Assets._Scripts.Manager.Language.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class LanguageManagerIgnoreToken : Attribute { }
