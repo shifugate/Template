@@ -13,7 +13,7 @@ namespace Assets._Scripts.Tool
 
         private static readonly string CLASS_EXPORT = $"{Application.dataPath}/_Scripts/Manager/Language/Token/";
 
-        [MenuItem("Project/Language/Generate Language Map Class")]
+        [MenuItem("Tools/Language/Generate Language Map Class")]
         private static void GenerateLanguageMapClass()
         {
             string source = $"{Application.dataPath}/{SOURCE_PATH}";

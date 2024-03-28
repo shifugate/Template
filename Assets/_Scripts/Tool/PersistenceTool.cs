@@ -8,7 +8,7 @@ namespace Assets._Scripts.Tool
 {
     public class PersistenceTool : EditorWindow
     {
-        [MenuItem("Project/Persistence/Clear Persistence")]
+        [MenuItem("Tools/Persistence/Clear Persistence")]
         private static void ClearPersistence()
         {
             string[] directories = Directory.GetDirectories(Application.persistentDataPath);
