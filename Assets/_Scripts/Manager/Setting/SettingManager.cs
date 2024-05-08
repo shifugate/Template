@@ -35,12 +35,26 @@ namespace Assets._Scripts.Manager.Setting
 
         private void SetProperties()
         {
+
+#if UNITY_STANDALONE
             data = JsonConvert.DeserializeObject<SettingModel>(File.ReadAllText($"{Application.streamingAssetsPath}/Manager/Setting/setting.json"));
+#elif UNITY_ANDROID || UNITY_IOS
+            Directory.CreateDirectory($"{Application.persistentDataPath}/Manager/Setting/");
+
+            if (!File.Exists($"{Application.persistentDataPath}/Manager/Setting/setting.json"))
+                File.WriteAllText($"{Application.persistentDataPath}/Manager/Setting/setting.json", Resources.Load<TextAsset>("Manager/Setting/setting").text);
+
+            data = JsonConvert.DeserializeObject<SettingModel>(File.ReadAllText($"{Application.persistentDataPath}/Manager/Setting/setting.json"));
+#endif
         }
 
         public void Save()
         {
+#if UNITY_STANDALONE
             File.WriteAllText($"{Application.streamingAssetsPath}/Manager/Setting/setting.json", JsonConvert.SerializeObject(data, Formatting.Indented));
+#elif UNITY_ANDROID || UNITY_IOS
+            File.WriteAllText($"{Application.persistentDataPath}/Manager/Setting/setting.json", JsonConvert.SerializeObject(data, Formatting.Indented));
+#endif
         }
 
         public void Reload()

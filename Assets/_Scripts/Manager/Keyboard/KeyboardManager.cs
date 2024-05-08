@@ -1,33 +1,14 @@
-﻿using UnityEngine;
-using System.Xml;
+﻿using Assets._Scripts.Manager.Keyboard.Model;
+using Newtonsoft.Json;
 using System.Collections.Generic;
+using UnityEngine;
 using System.IO;
-using UnityEngine.UI;
-using UnloopLib.Keyboards.Util;
-using Assets._Scripts.Manager.Keyboard.Models;
+using Assets._Scripts.Manager.Keyboard.Board;
 
 namespace Assets._Scripts.Manager.Keyboard
 {
-    [DefaultExecutionOrder(-1000)]
     public class KeyboardManager : MonoBehaviour
     {
-        public delegate void EnterKeyBoard();
-        public delegate void ShowKeyBoard();
-        public delegate void HideKeyBoard();
-
-        public EnterKeyBoard OnEnterKeyBoard;
-        public ShowKeyBoard OnShowKeyBoard;
-        public HideKeyBoard OnHideKeyBoard;
-
-        public Font font;
-        public List<InputField> fields = new List<InputField>();
-        public List<string> types = new List<string>();
-
-        public Assets._Scripts.Manager.Keyboard.Component.Keyboard keyboard;
-
-        private InputField lastField;
-        public InputField LastField { get { return lastField; } }
-
         #region Singleton
         private static KeyboardManager instance;
         public static KeyboardManager Instance { get { return instance; } }
@@ -44,212 +25,184 @@ namespace Assets._Scripts.Manager.Keyboard
         }
         #endregion 
 
-        private XmlDocument xml;
-        private List<KeyboardBackground> backgrounds;
-        private List<KeyImage> images;
+        public enum Type 
+        {
+            Normal,
+            Email,
+            Numeric,
+        }
+
+        [SerializeField]
+        private RectTransform keyboardHolder;
+        [SerializeField]
+        private KeyboardBoard keyboardBoard;
+
+        private Dictionary<string, KeyboardModel> contents = new Dictionary<string, KeyboardModel>();
+
+        private List<KeyboardBoard> keyboardBoards = new List<KeyboardBoard>();
+        public List<KeyboardBoard> KeyboardBoards { get { return keyboardBoards; } }
 
         private void Initialize(InitializerManager manager)
         {
             transform.SetParent(manager.transform);
+
+            SetProperties();
+            SetKeyboards();
         }
 
-        private void Start()
+        private void SetProperties()
         {
-            LoadXML();
-            LoadBackground();
-            LoadImages();
-            LoadKeyboard();
+#if UNITY_STANDALONE
+            string[] files = Directory.GetFiles($"{Application.streamingAssetsPath}/Manager/Keyboard", "*.json");
+
+            contents.Clear();
+
+            foreach (string file in files)
+                contents.Add(Path.GetFileNameWithoutExtension(file), JsonConvert.DeserializeObject<KeyboardModel>(File.ReadAllText(file)));
+#elif UNITY_ANDROID || UNITY_IOS
+            TextAsset[] assets = Resources.LoadAll<TextAsset>("Manager/Keyboard");
+
+            contents.Clear();
+
+            foreach (TextAsset asset in assets)
+                contents.Add(asset.name, JsonConvert.DeserializeObject<KeyboardModel>(asset.text));
+#endif
         }
 
-        private void Update()
+        private void SetKeyboards()
         {
-            VerifyInput();
-        }
-
-        private void LoadXML()
-        {
-            xml = new XmlDocument();
-            xml.Load(Application.streamingAssetsPath + "/Keyboards/config.xml");
-        }
-
-        private void LoadBackground()
-        {
-            backgrounds = new List<KeyboardBackground>();
-
-            foreach (XmlNode prop in xml.GetElementsByTagName("background"))
+            foreach (KeyValuePair<string, KeyboardModel> content in contents)
             {
-                KeyboardBackground keyboardBackgrounds = new KeyboardBackground();
-                keyboardBackgrounds.type = prop.Attributes["type"].Value;
-
-                Texture2D tex = null;
-                byte[] fileData = File.ReadAllBytes(Application.streamingAssetsPath + "/Keyboards/layout/" + prop.Attributes["background"].Value);
-
-                tex = new Texture2D(2, 2);
-                tex.LoadImage(fileData);
-
-                keyboardBackgrounds.background = tex;
-
-                backgrounds.Add(keyboardBackgrounds);
-            }
-        }
-
-        private void LoadImages()
-        {
-            images = new List<KeyImage>();
-
-            foreach (XmlNode prop in xml.GetElementsByTagName("image"))
-            {
-                KeyImage keyImage = new KeyImage();
-                keyImage.type = prop.Attributes["type"].Value;
-
-                Texture2D up = null;
-                byte[] fileData = File.ReadAllBytes(Application.streamingAssetsPath + "/Keyboards/layout/" + prop.Attributes["keyup"].Value);
-
-                up = new Texture2D(2, 2);
-                up.LoadImage(fileData);
-
-                keyImage.up = up;
-
-                fileData = File.ReadAllBytes(Application.streamingAssetsPath + "/Keyboards/layout/" + prop.Attributes["keydown"].Value);
-
-                Texture2D down = new Texture2D(2, 2);
-                down.LoadImage(fileData);
-
-                keyImage.down = down;
-
-                fileData = File.ReadAllBytes(Application.streamingAssetsPath + "/Keyboards/layout/" + prop.Attributes["keyselected"].Value);
-
-                Texture2D selected = new Texture2D(2, 2);
-                selected.LoadImage(fileData);
-
-                keyImage.selected = selected;
-
-                images.Add(keyImage);
-            }
-        }
-
-        private void LoadKeyboard()
-        {
-            keyboard = gameObject.AddComponent<Assets._Scripts.Manager.Keyboard.Component.Keyboard>();
-            keyboard.KeyboardIntialize(xml, images, backgrounds);
-        }
-
-        private void VerifyInput()
-        {
-            if (fields.Count == 0)
-                keyboard.FocusOut();
-
-            for (int i = 0; i < fields.Count; i++)
-            {
-                lastField = fields[i];
-
-                if (lastField.isFocused)
+                foreach (KeyboardKeyboardModel keyboardKeyboardModel in content.Value.keyboards)
                 {
-                    keyboard.FocusIn(lastField, types[i]);
+                    SetKeyboardData(content.Value, keyboardKeyboardModel);
 
-                    break;
-                }
-                else
-                {
-                    keyboard.FocusOut();
+                    keyboardBoards.Add(Instantiate(keyboardBoard, keyboardHolder).Setup(content.Key, keyboardKeyboardModel));
                 }
             }
         }
 
-        private void AddField(InputField input, string type, int index = -1)
+        private void SetKeyboardData(KeyboardModel keyboardModel, KeyboardKeyboardModel keyboardKeyboardModel)
         {
-            if (!fields.Contains(input))
-            {
-                if (index > -1)
-                {
-                    fields.Insert(index, input);
-                    types.Insert(index, type);
-                }
-                else
-                {
-                    fields.Add(input);
-                    types.Add(type);
-                }
-            }
+            if (keyboardKeyboardModel.font_normal_color == null)
+                keyboardKeyboardModel.font_normal_color = keyboardModel.font_normal_color;
+
+            if (keyboardKeyboardModel.font_press_color == null)
+                keyboardKeyboardModel.font_press_color = keyboardModel.font_press_color;
+
+            if (keyboardKeyboardModel.release_key == null)
+                keyboardKeyboardModel.release_key = keyboardModel.release_key;
+
+            if (keyboardKeyboardModel.press_key == null)
+                keyboardKeyboardModel.press_key = keyboardModel.press_key;
+
+            if (keyboardKeyboardModel.lock_key == null)
+                keyboardKeyboardModel.lock_key = keyboardModel.lock_key;
+
+            if (keyboardKeyboardModel.background == null)
+                keyboardKeyboardModel.background = keyboardModel.background;
+
+            if (keyboardKeyboardModel.width_key == 0)
+                keyboardKeyboardModel.width_key = keyboardModel.width_key;
+
+            if (keyboardKeyboardModel.height_key == 0)
+                keyboardKeyboardModel.height_key = keyboardModel.height_key;
+
+            if (keyboardKeyboardModel.space_row == 0)
+                keyboardKeyboardModel.space_row = keyboardModel.space_row;
+
+            if (keyboardKeyboardModel.space_key == 0)
+                keyboardKeyboardModel.space_key = keyboardModel.space_key;
+
+            if (keyboardKeyboardModel.margin_y == 0)
+                keyboardKeyboardModel.margin_y = keyboardModel.margin_y;
+
+            if (keyboardKeyboardModel.margin_x == 0)
+                keyboardKeyboardModel.margin_y = keyboardModel.margin_y;
+
+            foreach (KeyboardRowModel keyboardRowModel in keyboardKeyboardModel.rows)
+                SetRowData(keyboardKeyboardModel, keyboardRowModel);
         }
 
-        public InputField AddInputField(InputField input, string type)
+        private void SetRowData(KeyboardKeyboardModel keyboardKeyboardModel, KeyboardRowModel keyboardRowModel)
         {
-            AddField(input, type);
+            if (keyboardRowModel.font_normal_color == null)
+                keyboardRowModel.font_normal_color = keyboardKeyboardModel.font_normal_color;
 
-            return input;
+            if (keyboardRowModel.font_press_color == null)
+                keyboardRowModel.font_press_color = keyboardKeyboardModel.font_press_color;
+
+            if (keyboardRowModel.release_key == null)
+                keyboardRowModel.release_key = keyboardKeyboardModel.release_key;
+
+            if (keyboardRowModel.press_key == null)
+                keyboardRowModel.press_key = keyboardKeyboardModel.press_key;
+
+            if (keyboardRowModel.lock_key == null)
+                keyboardRowModel.lock_key = keyboardKeyboardModel.lock_key;
+
+            if (keyboardRowModel.background == null)
+                keyboardRowModel.background = keyboardKeyboardModel.background;
+
+            if (keyboardRowModel.width_key == 0)
+                keyboardRowModel.width_key = keyboardKeyboardModel.width_key;
+
+            if (keyboardRowModel.height_key == 0)
+                keyboardRowModel.height_key = keyboardKeyboardModel.height_key;
+
+            if (keyboardRowModel.space_row == 0)
+                keyboardRowModel.space_row = keyboardKeyboardModel.space_row;
+
+            if (keyboardRowModel.space_key == 0)
+                keyboardRowModel.space_key = keyboardKeyboardModel.space_key;
+
+            if (keyboardRowModel.margin_y == 0)
+                keyboardRowModel.margin_y = keyboardKeyboardModel.margin_y;
+
+            if (keyboardRowModel.margin_x == 0)
+                keyboardRowModel.margin_y = keyboardKeyboardModel.margin_y;
+
+            foreach (KeyboardKeyModel keyboardKeyModel in keyboardRowModel.keys)
+                SetKeyData(keyboardRowModel, keyboardKeyModel);
         }
 
-        public InputField AddInputField(InputField input, string type, int index)
+        private void SetKeyData(KeyboardRowModel keyboardRowModel, KeyboardKeyModel keyboardKeyModel)
         {
-            AddField(input, type, index);
+            if (keyboardKeyModel.font_normal_color == null)
+                keyboardKeyModel.font_normal_color = keyboardRowModel.font_normal_color;
 
-            return input;
-        }
+            if (keyboardKeyModel.font_press_color == null)
+                keyboardKeyModel.font_press_color = keyboardRowModel.font_press_color;
 
-        public InputField AddInputField(string name, string type, Font font, Sprite background)
-        {
-            InputField input = InputUtil.CreateInputField(name, font, background);
+            if (keyboardKeyModel.release_key == null)
+                keyboardKeyModel.release_key = keyboardRowModel.release_key;
 
-            AddField(input, type);
+            if (keyboardKeyModel.press_key == null)
+                keyboardKeyModel.press_key = keyboardRowModel.press_key;
 
-            return input;
-        }
+            if (keyboardKeyModel.lock_key == null)
+                keyboardKeyModel.lock_key = keyboardRowModel.lock_key;
 
-        public InputField AddInputField(string name, string type, Font font, Sprite background, int index)
-        {
-            InputField input = InputUtil.CreateInputField(name, font, background);
+            if (keyboardKeyModel.background == null)
+                keyboardKeyModel.background = keyboardRowModel.background;
 
-            AddField(input, type, index);
+            if (keyboardKeyModel.width_key == 0)
+                keyboardKeyModel.width_key = keyboardRowModel.width_key;
 
-            return input;
-        }
+            if (keyboardKeyModel.height_key == 0)
+                keyboardKeyModel.height_key = keyboardRowModel.height_key;
 
-        public InputField AddInputField(string name, string type, Font font, Sprite background, GameObject father)
-        {
-            InputField input = InputUtil.CreateInputField(name, font, background, father);
+            if (keyboardKeyModel.space_row == 0)
+                keyboardKeyModel.space_row = keyboardRowModel.space_row;
 
-            AddField(input, type);
+            if (keyboardKeyModel.space_key == 0)
+                keyboardKeyModel.space_key = keyboardRowModel.space_key;
 
-            return input;
-        }
+            if (keyboardKeyModel.margin_y == 0)
+                keyboardKeyModel.margin_y = keyboardRowModel.margin_y;
 
-        public InputField AddInputField(string name, string type, Font font, Sprite background, GameObject father, int index)
-        {
-            InputField input = InputUtil.CreateInputField(name, font, background, father);
-
-            AddField(input, type, index);
-
-            return input;
-        }
-
-        public void RemoveField(InputField input)
-        {
-            int index = fields.IndexOf(input);
-
-            if (index > -1)
-            {
-                fields.RemoveAt(index);
-                types.RemoveAt(index);
-            }
-        }
-
-        public void RemoveField(string name)
-        {
-            for (int i = fields.Count - 1; i >= 0; i--)
-            {
-                if (fields[i].name == name)
-                {
-                    fields.RemoveAt(i);
-                    types.RemoveAt(i);
-                }
-            }
-        }
-
-        public void RemoveAllFields()
-        {
-            fields.Clear();
-            types.Clear();
+            if (keyboardKeyModel.margin_x == 0)
+                keyboardKeyModel.margin_y = keyboardRowModel.margin_y;
         }
     }
 }

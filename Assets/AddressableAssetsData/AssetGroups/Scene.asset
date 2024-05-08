@@ -15,15 +15,21 @@ MonoBehaviour:
   m_GroupName: Scene
   m_Data:
     m_SerializedData: []
-  m_GUID: 9561309d4891058499a76346e388a056
+  m_GUID: 0bf6c5af7cd123545a3ca186b7f47023
   m_SerializeEntries:
-  - m_GUID: 51554b0167d127a40a9e0a5cd69f189a
-    m_Address: Assets/_Addressables/Scene
+  - m_GUID: ce52c43d759babc409f013bc4d26cb70
+    m_Address: Assets/_Addressables/Scene/HomeScene.unity
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d7b1c275adecf4945ab4bc0ab2ffa0c5
+    m_Address: Assets/_Addressables/Scene/SplashScene.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ecfee550872f19c448ea2ae5b4bba5f7, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 510a50c405c1748469e9d986c65adcb8, type: 2}
-    - {fileID: 11400000, guid: 4f79a0ad10595294c9af154dcc9a050d, type: 2}
+    - {fileID: 11400000, guid: 282a7328a37eda24bbda91750989376a, type: 2}
+    - {fileID: 11400000, guid: f0edadf22c18b6f4e8ddc90613cf1cb6, type: 2}

@@ -1,0 +1,91 @@
+{
+	"font_normal_color": "#CC0000",
+	"font_press_color": "#CC00CC",
+	"release_key": "normal_key.png",
+	"press_key": "press_key.png",
+	"background": "normal_bg.png",
+	"width_key": 100,
+	"height_key": 100,
+	"space_row": 20,
+	"space_key": 20,
+	"margin_x": 20,
+	"margin_y": 20,
+	"keyboards":
+	[
+		{
+			"type": 0,
+			"font_normal_color": "#CCEE00",
+			"font_press_color": "#CC33CC",
+			"space_row": 30,
+			"space_key": 30,
+			"margin_x": 20,
+			"margin_y": 30,
+			"rows": 
+			[
+				{
+					"font_normal_color": "#FF0000",
+					"font_press_color": "#FF33CC",
+					"space_key": 40,
+					"keys":
+					[
+						{
+							"normal": "\\",
+							"shifted": "|",
+						},
+						{
+							"font_normal_color": "#FFCC00",
+							"font_press_color": "#FF3398",
+							"normal": "1",
+							"shifted": "!",
+						},
+					],
+				},
+				{
+					"keys":
+					[
+						{
+							"normal": "q",
+							"shifted": "Q",
+						},
+						{
+							"normal": "w",
+							"shifted": "W",
+						},
+						{
+							"normal": "e",
+							"shifted": "E",
+							"normal_hold": ["é, è, ê"],
+							"shifted_hold": ["É, È, Ê"],
+						},
+					],
+				},
+				{
+					"keys":
+					[
+						{
+							"shift": true,
+							"release_key": "shift_normal_key.png",
+							"press_key": "shift_press_key.png",
+							"lock_key": "shift_lock_key.png",
+						},
+						{
+							"enter": true,
+							"release_key": "enter_normal_key.png",
+							"press_key": "enter_press_key.png",
+						},
+						{
+							"swap": true,
+							"normal": "123",
+							"shifted": "ABC"
+						},
+						{
+							"width_key": 300,
+							"normal": " ",
+							"shifted": " ",
+						},
+					],
+				},
+			],
+		},
+	]
+}

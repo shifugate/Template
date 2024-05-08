@@ -49,6 +49,7 @@ namespace Assets._Scripts.Manager.Language
 
         private void SetProperties()
         {
+#if UNITY_STANDALONE
             string[] files = Directory.GetFiles($"{Application.streamingAssetsPath}/Manager/Language", "*.json");
 
             contents.Clear();
@@ -57,6 +58,16 @@ namespace Assets._Scripts.Manager.Language
                 contents.Add(Path.GetFileNameWithoutExtension(file), JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(File.ReadAllText(file)));
 
             language = PlayerPrefs.HasKey("language") ? PlayerPrefs.GetString("language") : Enum.GetName(typeof(CountryCode), 0);
+#elif UNITY_ANDROID || UNITY_IOS
+            TextAsset[] assets = Resources.LoadAll<TextAsset>("Manager/Language");
+
+            contents.Clear();
+
+            foreach (TextAsset asset in assets)
+                contents.Add(asset.name, JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(asset.text));
+
+            language = PlayerPrefs.HasKey("language") ? PlayerPrefs.GetString("language") : Enum.GetName(typeof(CountryCode), 0);
+#endif
         }
 
         public void SetLanguage(CountryCode language)

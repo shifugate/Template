@@ -15,15 +15,16 @@ MonoBehaviour:
   m_GroupName: Transition
   m_Data:
     m_SerializedData: []
-  m_GUID: 7e19f4b64dbba4d43844ea9f8cab77da
+  m_GUID: dfaa6f0cc0342a64186e956f9a6de8b7
   m_SerializeEntries:
-  - m_GUID: 3bc1ff904f75e464e9a4fcc034788ac9
-    m_Address: Assets/_Addressables/Transition
+  - m_GUID: 9bcfc30507cd26a448bca2eb7566ad64
+    m_Address: Assets/_Addressables/Transition/RouterManagerFadeTransition.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ecfee550872f19c448ea2ae5b4bba5f7, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 1315c42960be9de45b61c184da14ecea, type: 2}
-    - {fileID: 11400000, guid: 96dc1ed80da2e11459ea9636240a4c57, type: 2}
+    - {fileID: 11400000, guid: 37cf576259b62f3409445a274aee0419, type: 2}
+    - {fileID: 11400000, guid: 4cd41b0b8552d4e448c31d4f5d120049, type: 2}

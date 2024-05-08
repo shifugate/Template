@@ -9,7 +9,11 @@ namespace Assets._Scripts.Tool
 {
     public class LanguageTool : EditorWindow
     {
+#if UNITY_STANDALONE
         private const string SOURCE_PATH = "StreamingAssets/Manager/Language";
+#elif UNITY_ANDROID || UNITY_IOS
+        private const string SOURCE_PATH = "Resources/Manager/Language";
+#endif
 
         private static readonly string CLASS_EXPORT = $"{Application.dataPath}/_Scripts/Manager/Language/Token/";
 
