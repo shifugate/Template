@@ -12,7 +12,7 @@
         public float height_key;
         public float space_row;
         public float space_key;
-        public float margin_x;
-        public float margin_y;
+        public int margin_x;
+        public int margin_y;
     }
 }

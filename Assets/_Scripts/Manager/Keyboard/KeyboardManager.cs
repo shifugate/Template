@@ -254,7 +254,7 @@ namespace Assets._Scripts.Manager.Keyboard
 
         public Texture2D GetTexture(string name)
         {
-            return textures.ContainsKey(name) ? textures[name] : null;
+            return name == null || !textures.ContainsKey(name) ? null : textures[name];
         }
     }
 }
