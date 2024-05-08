@@ -88,11 +88,14 @@ namespace Assets._Scripts.Manager.Keyboard
 
         private void SetKeyboardData(KeyboardModel keyboardModel, KeyboardKeyboardModel keyboardKeyboardModel)
         {
-            if (keyboardKeyboardModel.font_normal_color == null)
-                keyboardKeyboardModel.font_normal_color = keyboardModel.font_normal_color;
+            if (keyboardKeyboardModel.font_release_color == null)
+                keyboardKeyboardModel.font_release_color = keyboardModel.font_release_color;
 
             if (keyboardKeyboardModel.font_press_color == null)
                 keyboardKeyboardModel.font_press_color = keyboardModel.font_press_color;
+
+            if (keyboardKeyboardModel.font_lock_color == null)
+                keyboardKeyboardModel.font_lock_color = keyboardModel.font_lock_color;
 
             if (keyboardKeyboardModel.release_key == null)
                 keyboardKeyboardModel.release_key = keyboardModel.release_key;
@@ -135,11 +138,14 @@ namespace Assets._Scripts.Manager.Keyboard
 
         private void SetRowData(KeyboardKeyboardModel keyboardKeyboardModel, KeyboardRowModel keyboardRowModel)
         {
-            if (keyboardRowModel.font_normal_color == null)
-                keyboardRowModel.font_normal_color = keyboardKeyboardModel.font_normal_color;
+            if (keyboardRowModel.font_release_color == null)
+                keyboardRowModel.font_release_color = keyboardKeyboardModel.font_release_color;
 
             if (keyboardRowModel.font_press_color == null)
                 keyboardRowModel.font_press_color = keyboardKeyboardModel.font_press_color;
+
+            if (keyboardRowModel.font_lock_color == null)
+                keyboardRowModel.font_lock_color = keyboardKeyboardModel.font_lock_color;
 
             if (keyboardRowModel.release_key == null)
                 keyboardRowModel.release_key = keyboardKeyboardModel.release_key;
@@ -182,11 +188,14 @@ namespace Assets._Scripts.Manager.Keyboard
 
         private void SetKeyData(KeyboardRowModel keyboardRowModel, KeyboardKeyModel keyboardKeyModel)
         {
-            if (keyboardKeyModel.font_normal_color == null)
-                keyboardKeyModel.font_normal_color = keyboardRowModel.font_normal_color;
+            if (keyboardKeyModel.font_release_color == null)
+                keyboardKeyModel.font_release_color = keyboardRowModel.font_release_color;
 
             if (keyboardKeyModel.font_press_color == null)
                 keyboardKeyModel.font_press_color = keyboardRowModel.font_press_color;
+
+            if (keyboardKeyModel.font_lock_color == null)
+                keyboardKeyModel.font_lock_color = keyboardRowModel.font_lock_color;
 
             if (keyboardKeyModel.release_key == null)
                 keyboardKeyModel.release_key = keyboardRowModel.release_key;
@@ -236,8 +245,12 @@ namespace Assets._Scripts.Manager.Keyboard
 
             try
             {
+#if UNITY_STANDALONE
                 texture = new Texture2D(2, 2);
                 texture.LoadImage(File.ReadAllBytes($"{Application.streamingAssetsPath}/Manager/Keyboard/Texture/{name}"));
+#elif UNITY_ANDROID || UNITY_IOS
+                texture = Resources.Load<Texture2D>($"Manager/Keyboard/Texture/{Path.GetFileNameWithoutExtension(name)}");
+#endif
             }
             catch(Exception ex)
             {

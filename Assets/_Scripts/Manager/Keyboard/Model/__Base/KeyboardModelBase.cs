@@ -2,8 +2,9 @@
 {
     public class KeyboardModelBase
     {
-        public string font_normal_color;
+        public string font_release_color;
         public string font_press_color;
+        public string font_lock_color;
         public string release_key;
         public string press_key;
         public string lock_key;

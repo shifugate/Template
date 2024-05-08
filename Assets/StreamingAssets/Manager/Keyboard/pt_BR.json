@@ -1,5 +1,5 @@
 {
-	"font_normal_color": "#CC0000",
+	"font_release_color": "#CC0000",
 	"font_press_color": "#CC00CC",
 	"release_key": "normal_key.png",
 	"press_key": "press_key.png",
@@ -14,7 +14,7 @@
 	[
 		{
 			"type": 0,
-			"font_normal_color": "#CCEE00",
+			"font_release_color": "#CCEE00",
 			"font_press_color": "#CC33CC",
 			"space_row": 30,
 			"space_key": 30,
@@ -23,7 +23,7 @@
 			"rows": 
 			[
 				{
-					"font_normal_color": "#FF0000",
+					"font_release_color": "#FF0000",
 					"font_press_color": "#FF33CC",
 					"space_key": 40,
 					"keys":
@@ -33,7 +33,7 @@
 							"shifted": "|",
 						},
 						{
-							"font_normal_color": "#FFCC00",
+							"font_release_color": "#FFCC00",
 							"font_press_color": "#FF3398",
 							"normal": "1",
 							"shifted": "!",
@@ -67,6 +67,7 @@
 							"release_key": "shift_normal_key.png",
 							"press_key": "shift_press_key.png",
 							"lock_key": "shift_lock_key.png",
+							"font_lock_color": "#00FFCC",
 						},
 						{
 							"enter": true,
