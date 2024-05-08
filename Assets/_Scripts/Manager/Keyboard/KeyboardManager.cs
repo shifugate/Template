@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Assets._Scripts.Manager.Keyboard.Board;
+using System;
+using Assets._Scripts.Util;
 
 namespace Assets._Scripts.Manager.Keyboard
 {
@@ -38,6 +40,8 @@ namespace Assets._Scripts.Manager.Keyboard
         private KeyboardBoard keyboardBoard;
 
         private Dictionary<string, KeyboardModel> contents = new Dictionary<string, KeyboardModel>();
+
+        private Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 
         private List<KeyboardBoard> keyboardBoards = new List<KeyboardBoard>();
         public List<KeyboardBoard> KeyboardBoards { get { return keyboardBoards; } }
@@ -120,6 +124,11 @@ namespace Assets._Scripts.Manager.Keyboard
             if (keyboardKeyboardModel.margin_x == 0)
                 keyboardKeyboardModel.margin_y = keyboardModel.margin_y;
 
+            SetTexture(keyboardKeyboardModel.release_key);
+            SetTexture(keyboardKeyboardModel.press_key);
+            SetTexture(keyboardKeyboardModel.lock_key);
+            SetTexture(keyboardKeyboardModel.background);
+
             foreach (KeyboardRowModel keyboardRowModel in keyboardKeyboardModel.rows)
                 SetRowData(keyboardKeyboardModel, keyboardRowModel);
         }
@@ -162,6 +171,11 @@ namespace Assets._Scripts.Manager.Keyboard
             if (keyboardRowModel.margin_x == 0)
                 keyboardRowModel.margin_y = keyboardKeyboardModel.margin_y;
 
+            SetTexture(keyboardRowModel.release_key);
+            SetTexture(keyboardRowModel.press_key);
+            SetTexture(keyboardRowModel.lock_key);
+            SetTexture(keyboardRowModel.background);
+
             foreach (KeyboardKeyModel keyboardKeyModel in keyboardRowModel.keys)
                 SetKeyData(keyboardRowModel, keyboardKeyModel);
         }
@@ -203,6 +217,44 @@ namespace Assets._Scripts.Manager.Keyboard
 
             if (keyboardKeyModel.margin_x == 0)
                 keyboardKeyModel.margin_y = keyboardRowModel.margin_y;
+
+            SetTexture(keyboardKeyModel.release_key);
+            SetTexture(keyboardKeyModel.press_key);
+            SetTexture(keyboardKeyModel.lock_key);
+            SetTexture(keyboardKeyModel.background);
+        }
+
+        private void SetTexture(string name)
+        {
+            if (name == null)
+                return;
+
+            if (textures.ContainsKey(name))
+                return;
+
+            Texture2D texture = null;
+
+            try
+            {
+                texture = new Texture2D(2, 2);
+                texture.LoadImage(File.ReadAllBytes($"{Application.streamingAssetsPath}/Manager/Keyboard/Texture/{name}"));
+            }
+            catch(Exception ex)
+            {
+                SystemUtil.Log(GetType(), ex, SystemUtil.LogType.Exception);
+
+                return;
+            }
+
+            if (texture == null)
+                return;
+
+            textures.Add(name, texture);
+        }
+
+        public Texture2D GetTexture(string name)
+        {
+            return textures.ContainsKey(name) ? textures[name] : null;
         }
     }
 }

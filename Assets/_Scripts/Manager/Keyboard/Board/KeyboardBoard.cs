@@ -15,10 +15,18 @@ namespace Assets._Scripts.Manager.Keyboard.Board
         private KeyboardKeyboardModel keyboardKeyboardModel;
         public KeyboardKeyboardModel KeyboardKeyboardModel { get { return keyboardKeyboardModel; } }
 
+        private void SetBackground()
+        {
+            backgroundImage.texture = KeyboardManager.Instance.GetTexture(keyboardKeyboardModel.background);
+            backgroundImage.gameObject.SetActive(backgroundImage.texture != null);
+        }
+
         public KeyboardBoard Setup(string language, KeyboardKeyboardModel keyboardKeyboardModel)
         {
             this.language = language;
             this.keyboardKeyboardModel = keyboardKeyboardModel;
+
+            SetBackground();
 
             return this;
         }
