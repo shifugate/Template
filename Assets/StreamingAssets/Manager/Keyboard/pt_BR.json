@@ -1,92 +1,28 @@
 {
 	"font_release_color": "#CC0000",
 	"font_press_color": "#CC00CC",
-	"release_key": "normal_key.png",
-	"press_key": "press_key.png",
-	"background": "normal_bg.png",
+	"release_key": 
+	{ 
+		"file": "normal_key.png",
+		"margin": [10, 20, 10, 10]
+	},
+	"press_key": 
+	{
+		"file": "press_key.png"
+	},
+	"background": 
+	{
+		"file": "normal_bg.png",
+		"margin": [10, 10, 10, 10]
+	},
 	"width_key": 100,
 	"height_key": 100,
 	"space_row": 20,
 	"space_key": 20,
 	"margin_x": 20,
 	"margin_y": 20,
-	"keyboards":
-	[
-		{
-			"type": 0,
-			"font_release_color": "#CCEE00",
-			"font_press_color": "#CC33CC",
-			"space_row": 30,
-			"space_key": 30,
-			"margin_x": 20,
-			"margin_y": 30,
-			"rows": 
-			[
-				{
-					"font_release_color": "#FF0000",
-					"font_press_color": "#FF33CC",
-					"space_key": 40,
-					"keys":
-					[
-						{
-							"normal": "\\",
-							"shifted": "|",
-						},
-						{
-							"font_release_color": "#FFCC00",
-							"font_press_color": "#FF3398",
-							"normal": "1",
-							"shifted": "!",
-						},
-					],
-				},
-				{
-					"keys":
-					[
-						{
-							"normal": "q",
-							"shifted": "Q",
-						},
-						{
-							"normal": "w",
-							"shifted": "W",
-						},
-						{
-							"normal": "e",
-							"shifted": "E",
-							"normal_hold": ["é, è, ê"],
-							"shifted_hold": ["É, È, Ê"],
-						},
-					],
-				},
-				{
-					"keys":
-					[
-						{
-							"shift": true,
-							"release_key": "shift_normal_key.png",
-							"press_key": "shift_press_key.png",
-							"lock_key": "shift_lock_key.png",
-							"font_lock_color": "#00FFCC",
-						},
-						{
-							"enter": true,
-							"release_key": "enter_normal_key.png",
-							"press_key": "enter_press_key.png",
-						},
-						{
-							"swap": true,
-							"normal": "123",
-							"shifted": "ABC"
-						},
-						{
-							"width_key": 300,
-							"normal": " ",
-							"shifted": " ",
-						},
-					],
-				},
-			],
-		},
-	]
+	"start_at": 3,
+	"show_at": 2,
+	"show_margin": 300,
+	"keyboards": [0, 1]
 }

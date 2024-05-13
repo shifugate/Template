@@ -6,6 +6,9 @@ using System.IO;
 using Assets._Scripts.Manager.Keyboard.Board;
 using System;
 using Assets._Scripts.Util;
+using TMPro;
+using Assets._Scripts.Manager.Keyboard.Data;
+using System.Collections;
 
 namespace Assets._Scripts.Manager.Keyboard
 {
@@ -32,8 +35,20 @@ namespace Assets._Scripts.Manager.Keyboard
             Normal,
             Email,
             Numeric,
+            Normal_Mobile,
+            Email_Mobile,
+            Numeric_Mobile,
+        }
+        public enum Direction 
+        {
+            Left,
+            Top,
+            Right,
+            Bottom,
         }
 
+        [SerializeField]
+        private Canvas canvas;
         [SerializeField]
         private RectTransform keyboardHolder;
         [SerializeField]
@@ -41,10 +56,18 @@ namespace Assets._Scripts.Manager.Keyboard
 
         private Dictionary<string, KeyboardModel> contents = new Dictionary<string, KeyboardModel>();
 
-        private Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
+        private Dictionary<string, Sprite> sprites = new Dictionary<string, Sprite>();
 
         private List<KeyboardBoard> keyboardBoards = new List<KeyboardBoard>();
         public List<KeyboardBoard> KeyboardBoards { get { return keyboardBoards; } }
+
+        private List<KeyboardData> keyboardDatas;
+
+        private Coroutine focusCR;
+
+        private TMP_InputField inputField;
+
+        public Vector3 Scale { get { return canvas.transform.localScale; } }
 
         private void Initialize(InitializerManager manager)
         {
@@ -77,11 +100,37 @@ namespace Assets._Scripts.Manager.Keyboard
         {
             foreach (KeyValuePair<string, KeyboardModel> content in contents)
             {
-                foreach (KeyboardKeyboardModel keyboardKeyboardModel in content.Value.keyboards)
+                foreach (int type in content.Value.keyboards)
                 {
-                    SetKeyboardData(content.Value, keyboardKeyboardModel);
+#if UNITY_STANDALONE
+                    try
+                    {
+                        KeyboardKeyboardModel keyboardKeyboardModel = JsonConvert.DeserializeObject<KeyboardKeyboardModel>(File.ReadAllText($"{Application.streamingAssetsPath}/Manager/Keyboard/Type/{type}_{content.Key}.json"));
+                        keyboardKeyboardModel.type = (Type)type;
 
-                    keyboardBoards.Add(Instantiate(keyboardBoard, keyboardHolder).Setup(content.Key, keyboardKeyboardModel));
+                        SetKeyboardData(content.Value, keyboardKeyboardModel);
+
+                        keyboardBoards.Add(Instantiate(keyboardBoard, keyboardHolder).Setup(content.Key, keyboardKeyboardModel));
+                    }
+                    catch(Exception ex)
+                    {
+                        SystemUtil.Log(GetType(), ex, SystemUtil.LogType.Exception);
+                    }
+#elif UNITY_ANDROID || UNITY_IOS
+                    try
+                    {
+                        KeyboardKeyboardModel keyboardKeyboardModel = JsonConvert.DeserializeObject<KeyboardKeyboardModel>(Resources.Load<TextAsset>($"Manager/Keyboard/Type/{type}_{content.Key}").text);
+                        keyboardKeyboardModel.type = (Type)type;
+
+                        SetKeyboardData(content.Value, keyboardKeyboardModel);
+
+                        keyboardBoards.Add(Instantiate(keyboardBoard, keyboardHolder).Setup(content.Key, keyboardKeyboardModel));
+                    }
+                    catch (Exception ex)
+                    {
+                        SystemUtil.Log(GetType(), ex, SystemUtil.LogType.Exception);
+                    }
+#endif
                 }
             }
         }
@@ -127,10 +176,19 @@ namespace Assets._Scripts.Manager.Keyboard
             if (keyboardKeyboardModel.margin_x == 0)
                 keyboardKeyboardModel.margin_y = keyboardModel.margin_y;
 
-            SetTexture(keyboardKeyboardModel.release_key);
-            SetTexture(keyboardKeyboardModel.press_key);
-            SetTexture(keyboardKeyboardModel.lock_key);
-            SetTexture(keyboardKeyboardModel.background);
+            if (keyboardKeyboardModel.start_at == null)
+                keyboardKeyboardModel.start_at = keyboardModel.start_at;
+
+            if (keyboardKeyboardModel.show_at == null)
+                keyboardKeyboardModel.show_at = keyboardModel.show_at;
+
+            if (keyboardKeyboardModel.show_margin == 0)
+                keyboardKeyboardModel.show_margin = keyboardModel.show_margin;
+
+            SetSprite(keyboardKeyboardModel.release_key);
+            SetSprite(keyboardKeyboardModel.press_key);
+            SetSprite(keyboardKeyboardModel.lock_key);
+            SetSprite(keyboardKeyboardModel.background);
 
             foreach (KeyboardRowModel keyboardRowModel in keyboardKeyboardModel.rows)
                 SetRowData(keyboardKeyboardModel, keyboardRowModel);
@@ -177,10 +235,10 @@ namespace Assets._Scripts.Manager.Keyboard
             if (keyboardRowModel.margin_x == 0)
                 keyboardRowModel.margin_y = keyboardKeyboardModel.margin_y;
 
-            SetTexture(keyboardRowModel.release_key);
-            SetTexture(keyboardRowModel.press_key);
-            SetTexture(keyboardRowModel.lock_key);
-            SetTexture(keyboardRowModel.background);
+            SetSprite(keyboardRowModel.release_key);
+            SetSprite(keyboardRowModel.press_key);
+            SetSprite(keyboardRowModel.lock_key);
+            SetSprite(keyboardRowModel.background);
 
             foreach (KeyboardKeyModel keyboardKeyModel in keyboardRowModel.keys)
                 SetKeyData(keyboardRowModel, keyboardKeyModel);
@@ -227,47 +285,155 @@ namespace Assets._Scripts.Manager.Keyboard
             if (keyboardKeyModel.margin_x == 0)
                 keyboardKeyModel.margin_y = keyboardRowModel.margin_y;
 
-            SetTexture(keyboardKeyModel.release_key);
-            SetTexture(keyboardKeyModel.press_key);
-            SetTexture(keyboardKeyModel.lock_key);
-            SetTexture(keyboardKeyModel.background);
+            SetSprite(keyboardKeyModel.release_key);
+            SetSprite(keyboardKeyModel.press_key);
+            SetSprite(keyboardKeyModel.lock_key);
+            SetSprite(keyboardKeyModel.background);
         }
 
-        private void SetTexture(string name)
+        private void SetSprite(KeyboardSpriteModel spriteModel)
         {
-            if (name == null)
+            if (spriteModel?.file == null)
                 return;
 
-            if (textures.ContainsKey(name))
+            if (sprites.ContainsKey(spriteModel.file))
                 return;
 
             Texture2D texture = null;
+            Sprite sprite = null;
 
             try
             {
 #if UNITY_STANDALONE
                 texture = new Texture2D(2, 2);
-                texture.LoadImage(File.ReadAllBytes($"{Application.streamingAssetsPath}/Manager/Keyboard/Texture/{name}"));
+                texture.LoadImage(File.ReadAllBytes($"{Application.streamingAssetsPath}/Manager/Keyboard/Texture/{spriteModel.file}"));
 #elif UNITY_ANDROID || UNITY_IOS
-                texture = Resources.Load<Texture2D>($"Manager/Keyboard/Texture/{Path.GetFileNameWithoutExtension(name)}");
+                texture = Resources.Load<Texture2D>($"Manager/Keyboard/Texture/{Path.GetFileNameWithoutExtension(spriteModel.file)}");
 #endif
+
+                if (spriteModel.margin == null || spriteModel.margin.Count != 4)
+                    spriteModel.margin = new List<int>(new int[] { 0, 0, 0, 0 });
+
+                sprite = Sprite.Create(texture, 
+                    new Rect(0, 0, texture.width, texture.height), 
+                    new Vector2(0.5f, 0.5f), 100, 0, SpriteMeshType.FullRect, 
+                    new Vector4(spriteModel.margin[0], spriteModel.margin[1], spriteModel.margin[2], spriteModel.margin[3]));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 SystemUtil.Log(GetType(), ex, SystemUtil.LogType.Exception);
 
                 return;
             }
 
-            if (texture == null)
+            if (sprite == null)
                 return;
 
-            textures.Add(name, texture);
+            sprites.Add(spriteModel.file, sprite);
         }
 
-        public Texture2D GetTexture(string name)
+        private IEnumerator FocusCR()
         {
-            return name == null || !textures.ContainsKey(name) ? null : textures[name];
+            while (keyboardDatas != null && keyboardDatas.Count > 0)
+            {
+                keyboardDatas.RemoveAll(data => data?.inputField == null);
+
+                foreach (KeyboardData keyboardData in keyboardDatas)
+                {
+                    if (keyboardData.inputField.isFocused && inputField != keyboardData.inputField)
+                    {
+                        inputField = keyboardData.inputField;
+
+                        if (inputField != null)
+                            foreach (KeyboardBoard keyboard in keyboardBoards)
+                                if (keyboard.KeyboardKeyboardModel.type == keyboardData.type)
+                                    keyboard.Show();
+                                else
+                                    keyboard.Hide();
+                    }
+                }
+
+                yield return null;
+            }
+        }
+
+        public Sprite GetSprite(KeyboardSpriteModel spriteModel)
+        {
+            return spriteModel?.file == null || !sprites.ContainsKey(spriteModel.file) ? null : sprites[spriteModel.file];
+        }
+
+        public bool HasSpriteBorder(Sprite sprite)
+        {
+            return sprite != null && sprite.border != null && (sprite.border[0] > 0 || sprite.border[1] > 0 || sprite.border[2] > 0 || sprite.border[3] > 0);
+        }
+
+        public void SetInputFields(List<KeyboardData> data)
+        {
+            keyboardDatas = data;
+
+            if (focusCR != null)
+                StopCoroutine(focusCR);
+
+            focusCR = StartCoroutine(FocusCR());
+        }
+
+        public void AddInputField(KeyboardData data)
+        {
+            if (data == null)
+                return;
+
+            if (keyboardDatas == null)
+                keyboardDatas = new List<KeyboardData>();
+
+            keyboardDatas.RemoveAll(kData => kData?.inputField == null);
+
+            if (!keyboardDatas.Exists(kData => kData.inputField == data.inputField))
+                keyboardDatas.Add(data);
+
+            if (focusCR != null)
+                StopCoroutine(focusCR);
+
+            focusCR = StartCoroutine(FocusCR());
+        }
+
+        public void RemoveInputField(KeyboardData data)
+        {
+            if (data == null)
+                return;
+
+            if (keyboardDatas == null || keyboardDatas.Count == 0)
+                return;
+
+            if (focusCR != null)
+                StopCoroutine(focusCR);
+
+            keyboardDatas.RemoveAll(kData => kData?.inputField == null);
+            keyboardDatas.RemoveAll(kData => kData == data);
+
+            if (keyboardDatas.Count == 0)
+                return;
+
+            focusCR = StartCoroutine(FocusCR());
+        }
+
+        public void RemoveInputField(TMP_InputField inputField)
+        {
+            if (inputField == null)
+                return;
+
+            if (keyboardDatas == null || keyboardDatas.Count == 0)
+                return;
+
+            if (focusCR != null)
+                StopCoroutine(focusCR);
+
+            keyboardDatas.RemoveAll(data => data?.inputField == null);
+            keyboardDatas.RemoveAll(data => data.inputField == inputField);
+
+            if (keyboardDatas.Count == 0)
+                return;
+
+            focusCR = StartCoroutine(FocusCR());
         }
     }
 }

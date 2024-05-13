@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 namespace Assets._Scripts.Manager.Keyboard.Model
 {
-    public class KeyboardModel : KeyboardModelBase
+    public class KeyboardSpriteModel : KeyboardModelBase
     {
-        public List<int> keyboards = new List<int>();
+        public string file;
+        public List<int> margin = new List<int>();
     }
 }

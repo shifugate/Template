@@ -1,5 +1,7 @@
 ﻿using Assets._Scripts.Manager.Keyboard.Model;
 using Assets._Scripts.Manager.Keyboard.Row;
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +14,7 @@ namespace Assets._Scripts.Manager.Keyboard.Board
         [SerializeField]
         private KeyboardRow keyboardRow;
         [SerializeField]
-        private RawImage backgroundImage;
+        private Image backgroundImage;
         [SerializeField]
         private VerticalLayoutGroup verticalLayoutGroup;
 
@@ -21,6 +23,8 @@ namespace Assets._Scripts.Manager.Keyboard.Board
 
         private KeyboardKeyboardModel keyboardKeyboardModel;
         public KeyboardKeyboardModel KeyboardKeyboardModel { get { return keyboardKeyboardModel; } }
+
+        private bool showing = true;
 
         private void SetSpace()
         {
@@ -34,14 +38,115 @@ namespace Assets._Scripts.Manager.Keyboard.Board
 
         private void SetTextures()
         {
-            backgroundImage.texture = KeyboardManager.Instance.GetTexture(keyboardKeyboardModel.background);
-            backgroundImage.gameObject.SetActive(backgroundImage.texture != null);
+            backgroundImage.sprite = KeyboardManager.Instance.GetSprite(keyboardKeyboardModel.background);
+            backgroundImage.type = KeyboardManager.Instance.HasSpriteBorder(backgroundImage.sprite) ? Image.Type.Sliced : Image.Type.Simple;
+            backgroundImage.gameObject.SetActive(backgroundImage.sprite != null);
         }
 
         private void SetRows()
         {
             foreach (KeyboardRowModel keyboardRowModel in keyboardKeyboardModel.rows)
                 Instantiate(keyboardRow, rowHolder).Setup(keyboardRowModel);
+        }
+
+        private void SetStart()
+        {
+            if (!showing)
+                return;
+
+            showing = false;
+
+            KeyboardManager.Direction direction = (KeyboardManager.Direction)keyboardKeyboardModel.start_at;
+
+            switch (direction)
+            {
+                case KeyboardManager.Direction.Left:
+                    SetStartLeft();
+                    break;
+                case KeyboardManager.Direction.Top:
+                    SetStartTop();
+                    break;
+                case KeyboardManager.Direction.Right:
+                    SetStartRight();
+                    break;
+                case KeyboardManager.Direction.Bottom:
+                    SetStartBottom();
+                    break;
+            }
+        }
+
+        private void SetShow()
+        {
+            if (showing)
+                return;
+
+            showing = true;
+
+            KeyboardManager.Direction direction = (KeyboardManager.Direction)keyboardKeyboardModel.show_at;
+
+            switch (direction)
+            {
+                case KeyboardManager.Direction.Left:
+                    SetShowLeft();
+                    break;
+                case KeyboardManager.Direction.Top:
+                    SetShowTop();
+                    break;
+                case KeyboardManager.Direction.Right:
+                    SetShowRight();
+                    break;
+                case KeyboardManager.Direction.Bottom:
+                    SetShowBottom();
+                    break;
+            }
+        }
+
+        private void SetStartLeft()
+        {
+            rowHolder.DOKill();
+            rowHolder.DOAnchorPos(new Vector2(-Screen.width / KeyboardManager.Instance.Scale.x, 0), 0.25f);
+        }
+
+        private void SetStartTop()
+        {
+            rowHolder.DOKill();
+            rowHolder.DOAnchorPos(new Vector2(0, Screen.height / KeyboardManager.Instance.Scale.y), 0.25f);
+        }
+
+        private void SetStartRight()
+        {
+            rowHolder.DOKill();
+            rowHolder.DOAnchorPos(new Vector2(Screen.width / KeyboardManager.Instance.Scale.x, 0), 0.25f);
+        }
+
+        private void SetStartBottom()
+        {
+            rowHolder.DOKill();
+            rowHolder.DOAnchorPos(new Vector2(0, -Screen.height / KeyboardManager.Instance.Scale.y), 0.25f);
+        }
+
+        private void SetShowLeft()
+        {
+            rowHolder.DOKill();
+            rowHolder.DOAnchorPos(new Vector2((Screen.width / KeyboardManager.Instance.Scale.x) / 2 - rowHolder.rect.width / 2, 0), 0.25f);
+        }
+
+        private void SetShowTop()
+        {
+            rowHolder.DOKill();
+            rowHolder.DOAnchorPosY(Screen.height / KeyboardManager.Instance.Scale.y, 0.25f);
+        }
+
+        private void SetShowRight()
+        {
+            rowHolder.DOKill();
+            rowHolder.DOAnchorPos(new Vector2(-(Screen.width / KeyboardManager.Instance.Scale.x) / 2 + rowHolder.rect.width / 2, 0), 0.25f);
+        }
+
+        private void SetShowBottom()
+        {
+            rowHolder.DOKill();
+            rowHolder.DOAnchorPosY(-Screen.height / KeyboardManager.Instance.Scale.y, 0.25f);
         }
 
         public KeyboardBoard Setup(string language, KeyboardKeyboardModel keyboardKeyboardModel)
@@ -53,8 +158,19 @@ namespace Assets._Scripts.Manager.Keyboard.Board
             SetMargin();
             SetTextures();
             SetRows();
+            SetStart();
 
             return this;
+        }
+
+        public void Show()
+        {
+            SetShow();
+        }
+
+        public void Hide()
+        {
+            SetStart();
         }
     }
 }

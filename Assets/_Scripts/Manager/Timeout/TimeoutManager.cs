@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
-using Assets._Scripts.Manager.Route;
 using Assets._Scripts.Manager.Setting;
+using Assets._Scripts.Manager.Timeout.Event;
 
 namespace Assets._Scripts.Manager.Timeout
 {
@@ -28,7 +27,7 @@ namespace Assets._Scripts.Manager.Timeout
 
         private void Update()
         {
-            VerifyClick();
+            VerifyInput();
             UpdateTime();
         }
 
@@ -44,24 +43,21 @@ namespace Assets._Scripts.Manager.Timeout
             ResetTime();
         }
 
-        private void VerifyClick()
+        private void VerifyInput()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.anyKey || Input.touchCount > 0)
                 time = 0;
         }
 
         private void UpdateTime()
         {
-            if (SceneManager.GetActiveScene().name == RouteManager.Routes.SplashScene.ToString())
-                return;
-
             time += Time.deltaTime;
 
             if (time > SettingManager.Instance.Data.timeout)
             {
                 ResetTime();
 
-                RouteManager.Instance.LoadScene(RouteManager.Routes.SplashScene);
+                TimeoutManagerEvent.OnTimeout?.Invoke();
             }
         }
 

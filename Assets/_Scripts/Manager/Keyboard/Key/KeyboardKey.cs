@@ -10,11 +10,11 @@ namespace Assets._Scripts.Manager.Keyboard.Key
         [SerializeField]
         private RectTransform rectTransform;
         [SerializeField]
-        private RawImage releaseImage;
+        private Image releaseImage;
         [SerializeField]
-        private RawImage pressImage;
+        private Image pressImage;
         [SerializeField]
-        private RawImage lockImage;
+        private Image lockImage;
         [SerializeField]
         private TextMeshProUGUI keyText;
 
@@ -31,15 +31,18 @@ namespace Assets._Scripts.Manager.Keyboard.Key
 
         private void SetTextures()
         {
-            releaseImage.texture = KeyboardManager.Instance.GetTexture(keyboardKeyModel.release_key);
-            releaseImage.gameObject.SetActive(releaseImage.texture != null);
+            releaseImage.sprite = KeyboardManager.Instance.GetSprite(keyboardKeyModel.release_key);
+            releaseImage.type = KeyboardManager.Instance.HasSpriteBorder(releaseImage.sprite) ? Image.Type.Sliced : Image.Type.Simple;
+            releaseImage.gameObject.SetActive(releaseImage.sprite != null);
 
-            pressImage.texture = KeyboardManager.Instance.GetTexture(keyboardKeyModel.press_key);
-            pressImage.gameObject.SetActive(pressImage.texture != null);
+            pressImage.sprite = KeyboardManager.Instance.GetSprite(keyboardKeyModel.press_key);
+            pressImage.type = KeyboardManager.Instance.HasSpriteBorder(pressImage.sprite) ? Image.Type.Sliced : Image.Type.Simple;
+            pressImage.gameObject.SetActive(pressImage.sprite != null);
             pressImage.color = new Color(1, 1, 1, 0);
 
-            lockImage.texture = KeyboardManager.Instance.GetTexture(keyboardKeyModel.lock_key);
-            lockImage.gameObject.SetActive(lockImage.texture != null);
+            lockImage.sprite = KeyboardManager.Instance.GetSprite(keyboardKeyModel.lock_key);
+            lockImage.type = KeyboardManager.Instance.HasSpriteBorder(lockImage.sprite) ? Image.Type.Sliced : Image.Type.Simple;
+            lockImage.gameObject.SetActive(lockImage.sprite != null);
             lockImage.color = new Color(1, 1, 1, 0);
         }
 

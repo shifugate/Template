@@ -4,6 +4,6 @@ namespace Assets._Scripts.MC.Splash
 {
     public class SplashModel : ModelBase
     {
-    
+
     }
 }
