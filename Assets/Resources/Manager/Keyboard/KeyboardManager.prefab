@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 4049717253463117021}
+  rectTransform: {fileID: 1599047370796443094}
   keyboardHolder: {fileID: 1148201116119395580}
   keyboardBoard: {fileID: 2704530047492330927, guid: c2328864fc263b4449434011cade37b7,
     type: 3}

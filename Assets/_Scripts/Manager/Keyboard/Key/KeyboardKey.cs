@@ -24,6 +24,8 @@ namespace Assets._Scripts.Manager.Keyboard.Key
         [SerializeField]
         private TextMeshProUGUI keyText;
 
+        private RectTransform keyboardTransform;
+
         public string Key { get { return keyText.text; } }
 
         private KeyboardKeyModel keyboardKeyModel;
@@ -40,16 +42,35 @@ namespace Assets._Scripts.Manager.Keyboard.Key
 
         private float time;
 
+        private Vector2 position;
+
+        private void Awake()
+        {
+            SetProperties();
+        }
+
         private void Update()
         {
             UpdateInput();
+            UpdateHolder();
+        }
+
+        private void SetProperties()
+        {
+            keyboardTransform = (RectTransform)transform.parent.parent;
         }
 
         private void UpdateInput()
         {
             if (!press)
             {
-                foreach(Transform transform in holdHolder)
+                if (!holdHolder.parent.Equals(transform))
+                {
+                    holdHolder.SetParent(transform, true);
+                    holdHolder.anchoredPosition = Vector3.zero;
+                }
+
+                foreach (Transform transform in holdHolder)
                     Destroy(transform.gameObject);
 
                 return;
@@ -63,8 +84,17 @@ namespace Assets._Scripts.Manager.Keyboard.Key
             holdList = keyboardKeyModel.normal_hold;
 
             if (holdList != null && holdList.Count > 0 && holdHolder.childCount == 0)
-                foreach(string key in holdList) 
+                foreach (string key in holdList)
                     Instantiate(keyboardHoldKey, holdHolder).Setup(keyboardKeyModel, key);
+
+            if (!holdHolder.parent.Equals(keyboardTransform))
+            {
+                holdHolder.SetParent(keyboardTransform, true);
+
+                Debug.Log(holdHolder.anchoredPosition.y);
+
+                position = holdHolder.anchoredPosition;
+            }
 
             GameObject keyObject = ScreenUtil.GetUIOverPointerByName("KEYBOARDMANAGER_KEY");
 
@@ -84,6 +114,26 @@ namespace Assets._Scripts.Manager.Keyboard.Key
             {
                 holdKey.OutKey();
             }
+        }
+
+        private void UpdateHolder()
+        {
+            if (keyboardKeyModel == null || !holdHolder.parent.Equals(keyboardTransform))
+                return;
+
+            float x = position.x;
+            float y = position.y + keyboardKeyModel.height_key;
+
+            if (x - holdHolder.rect.width / 2 < -keyboardTransform.rect.width / 2)
+                x = -keyboardTransform.rect.width / 2 + holdHolder.rect.width / 2;
+            else if (x + holdHolder.rect.width / 2 > keyboardTransform.rect.width / 2)
+                x = keyboardTransform.rect.width / 2 - holdHolder.rect.width / 2;
+
+            Debug.Log($"{y + holdHolder.rect.height / 2} : {keyboardTransform.rect.height / 2}");
+
+            //if (y + holdHolder.rect.height / 2 > keyboardTransform.rect.height / 2)
+
+            holdHolder.anchoredPosition = new Vector2(x, y);
         }
 
         private void SetSize()

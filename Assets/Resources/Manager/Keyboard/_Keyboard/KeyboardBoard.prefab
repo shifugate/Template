@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b33f55956f0f7ed4c8831cef360e5db2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rectTransform: {fileID: 566638433704323872}
   rowHolder: {fileID: 566638433704323872}
   keyboardRow: {fileID: 8096851842347112897, guid: 544316faacef39e45946d15734f53445,
     type: 3}

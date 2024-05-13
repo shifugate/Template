@@ -11,6 +11,7 @@ namespace Assets._Scripts.Manager.Keyboard.Board
     {
         [SerializeField]
         private RectTransform rowHolder;
+        public RectTransform RowHolder { get { return rowHolder; } }
         [SerializeField]
         private KeyboardRow keyboardRow;
         [SerializeField]
