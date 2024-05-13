@@ -24,5 +24,6 @@
 	"start_at": 3,
 	"show_at": 3,
 	"show_margin": 50,
+	"click_time": 0.5,
 	"keyboards": [0, 1]
 }

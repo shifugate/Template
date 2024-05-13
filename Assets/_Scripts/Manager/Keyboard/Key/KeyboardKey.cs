@@ -1,4 +1,5 @@
 ﻿using Assets._Scripts.Manager.Keyboard.Model;
+using Assets._Scripts.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +24,29 @@ namespace Assets._Scripts.Manager.Keyboard.Key
         private Color fontReleaseColor;
         private Color fontPressColor;
         private Color fontLockColor;
+
+        private bool press;
+
+        private float time;
+
+        private void Update()
+        {
+            UpdateInput();
+        }
+
+        private void UpdateInput()
+        {
+            if (!press)
+                return;
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                press = false;
+
+                if (time <= keyboardKeyModel.click_time)
+                    SystemUtil.Log(GetType(), $"{keyText.text} : {Time.deltaTime}");
+            }
+        }
 
         private void SetSize()
         {
@@ -63,7 +87,7 @@ namespace Assets._Scripts.Manager.Keyboard.Key
         {
             this.keyboardKeyModel = keyboardKeyModel;
 
-            name = "KEYBOARDMANAGER";
+            name = "KEYBOARDMANAGER_KEY";
 
             SetSize();
             SetTextures();
@@ -73,19 +97,16 @@ namespace Assets._Scripts.Manager.Keyboard.Key
             return this;
         }
 
-        public void OnPointerDown()
+        public void UpdateKey()
         {
+            time += Time.deltaTime;
 
-        }
+            if (press)
+                return;
 
-        public void OnPointerUp()
-        {
+            press = true;
 
-        }
-
-        public void OnPointerEnter()
-        {
-
+            time = 0;
         }
     }
 }

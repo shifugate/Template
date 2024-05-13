@@ -10,6 +10,8 @@ using TMPro;
 using Assets._Scripts.Manager.Keyboard.Data;
 using System.Collections;
 using Assets._Scripts.Manager.Language;
+using UnityEngine.UI;
+using Assets._Scripts.Manager.Keyboard.Key;
 
 namespace Assets._Scripts.Manager.Keyboard
 {
@@ -77,8 +79,29 @@ namespace Assets._Scripts.Manager.Keyboard
 
         private void UpdateInput()
         {
-            if (Input.GetMouseButtonDown(0) && !ScreenUtil.PointerOverUIName("KEYBOARDMANAGER"))
+            if (inputField == null)
+                return;
+
+            GameObject keyObject = ScreenUtil.GetUIOverPointerByName("KEYBOARDMANAGER_KEY");
+
+            if (Input.GetMouseButtonDown(0) && !ScreenUtil.PointerOverUIName("KEYBOARDMANAGER") && keyObject == null)
+            {
                 inputField = null;
+            }
+            else
+            {
+                if (keyObject != null && Input.GetMouseButton(0))
+                {
+                    KeyboardKey keyboardKey = keyObject.GetComponent<KeyboardKey>();
+
+                    if (keyboardKey != null)
+                        keyboardKey.UpdateKey();
+                }
+
+                inputField.Select();
+                inputField.ActivateInputField();
+                inputField.caretPosition = inputField.text.Length;
+            }
         }
 
         private void Initialize(InitializerManager manager)
@@ -229,6 +252,9 @@ namespace Assets._Scripts.Manager.Keyboard
             if (keyboardKeyboardModel.show_margin == 0)
                 keyboardKeyboardModel.show_margin = keyboardModel.show_margin;
 
+            if (keyboardKeyboardModel.click_time == 0)
+                keyboardKeyboardModel.click_time = keyboardModel.click_time;
+
             SetSprite(keyboardKeyboardModel.release_key);
             SetSprite(keyboardKeyboardModel.press_key);
             SetSprite(keyboardKeyboardModel.lock_key);
@@ -279,6 +305,9 @@ namespace Assets._Scripts.Manager.Keyboard
             if (keyboardRowModel.margin_x == 0)
                 keyboardRowModel.margin_y = keyboardKeyboardModel.margin_y;
 
+            if (keyboardRowModel.click_time == 0)
+                keyboardRowModel.click_time = keyboardKeyboardModel.click_time;
+
             SetSprite(keyboardRowModel.release_key);
             SetSprite(keyboardRowModel.press_key);
             SetSprite(keyboardRowModel.lock_key);
@@ -328,6 +357,9 @@ namespace Assets._Scripts.Manager.Keyboard
 
             if (keyboardKeyModel.margin_x == 0)
                 keyboardKeyModel.margin_y = keyboardRowModel.margin_y;
+
+            if (keyboardKeyModel.click_time == 0)
+                keyboardKeyModel.click_time = keyboardRowModel.click_time;
 
             SetSprite(keyboardKeyModel.release_key);
             SetSprite(keyboardKeyModel.press_key);

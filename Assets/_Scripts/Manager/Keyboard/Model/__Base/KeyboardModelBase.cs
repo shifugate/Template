@@ -18,5 +18,6 @@
         public int? start_at;
         public int? show_at;
         public float show_margin;
+        public float click_time;
     }
 }

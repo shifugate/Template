@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
-using NUnit.Framework;
 
 namespace Assets._Scripts.Util
 {
@@ -25,7 +24,18 @@ namespace Assets._Scripts.Util
             return false;
         }
 
-        public static List<GameObject> PointerOverUIs()
+        public static GameObject GetUIOverPointerByName(string name)
+        {
+            List<RaycastResult> raycastResults = GetEventSystemRaycastResults();
+
+            foreach (RaycastResult raycastResult in raycastResults)
+                if (raycastResult.gameObject.name == name)
+                    return raycastResult.gameObject;
+
+            return null;
+        }
+
+        public static List<GameObject> GetUIsOverPointer()
         {
             List<GameObject> list = new List<GameObject>();
             List<RaycastResult> raycastResults = GetEventSystemRaycastResults();
