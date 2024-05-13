@@ -63,6 +63,8 @@ namespace Assets._Scripts.Manager.Keyboard.Key
         {
             this.keyboardKeyModel = keyboardKeyModel;
 
+            name = "KEYBOARDMANAGER";
+
             SetSize();
             SetTextures();
             SetColors();

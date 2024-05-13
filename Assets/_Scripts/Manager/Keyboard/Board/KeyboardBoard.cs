@@ -104,55 +104,65 @@ namespace Assets._Scripts.Manager.Keyboard.Board
         private void SetStartLeft()
         {
             rowHolder.DOKill();
-            rowHolder.DOAnchorPos(new Vector2(-Screen.width / KeyboardManager.Instance.Scale.x, 0), 0.25f);
+            rowHolder.DOAnchorPos(new Vector2(-Screen.width / KeyboardManager.Instance.Scale.x, 0), 0.25f)
+                .OnComplete(() => rowHolder.gameObject.SetActive(false));
         }
 
         private void SetStartTop()
         {
             rowHolder.DOKill();
-            rowHolder.DOAnchorPos(new Vector2(0, Screen.height / KeyboardManager.Instance.Scale.y), 0.25f);
+            rowHolder.DOAnchorPos(new Vector2(0, Screen.height / KeyboardManager.Instance.Scale.y), 0.25f)
+                .OnComplete(() => rowHolder.gameObject.SetActive(false));
         }
 
         private void SetStartRight()
         {
             rowHolder.DOKill();
-            rowHolder.DOAnchorPos(new Vector2(Screen.width / KeyboardManager.Instance.Scale.x, 0), 0.25f);
+            rowHolder.DOAnchorPos(new Vector2(Screen.width / KeyboardManager.Instance.Scale.x, 0), 0.25f)
+                .OnComplete(() => rowHolder.gameObject.SetActive(false));
         }
 
         private void SetStartBottom()
         {
             rowHolder.DOKill();
-            rowHolder.DOAnchorPos(new Vector2(0, -Screen.height / KeyboardManager.Instance.Scale.y), 0.25f);
+            rowHolder.DOAnchorPos(new Vector2(0, -Screen.height / KeyboardManager.Instance.Scale.y), 0.25f)
+                .OnComplete(() => rowHolder.gameObject.SetActive(false));
         }
 
         private void SetShowLeft()
         {
+            rowHolder.gameObject.SetActive(true);
             rowHolder.DOKill();
-            rowHolder.DOAnchorPos(new Vector2((Screen.width / KeyboardManager.Instance.Scale.x) / 2 - rowHolder.rect.width / 2, 0), 0.25f);
+            rowHolder.DOAnchorPos(new Vector2(-(Screen.width / KeyboardManager.Instance.Scale.x) / 2 + rowHolder.rect.width / 2 + keyboardKeyboardModel.show_margin, 0), 0.25f);
         }
 
         private void SetShowTop()
         {
+            rowHolder.gameObject.SetActive(true);
             rowHolder.DOKill();
-            rowHolder.DOAnchorPosY(Screen.height / KeyboardManager.Instance.Scale.y, 0.25f);
+            rowHolder.DOAnchorPos(new Vector2(0, (Screen.height / KeyboardManager.Instance.Scale.y) / 2 - rowHolder.rect.height / 2 - keyboardKeyboardModel.show_margin), 0.25f);
         }
 
         private void SetShowRight()
         {
+            rowHolder.gameObject.SetActive(true);
             rowHolder.DOKill();
-            rowHolder.DOAnchorPos(new Vector2(-(Screen.width / KeyboardManager.Instance.Scale.x) / 2 + rowHolder.rect.width / 2, 0), 0.25f);
+            rowHolder.DOAnchorPos(new Vector2((Screen.width / KeyboardManager.Instance.Scale.x) / 2 - rowHolder.rect.width / 2 - keyboardKeyboardModel.show_margin, 0), 0.25f);
         }
 
         private void SetShowBottom()
         {
+            rowHolder.gameObject.SetActive(true);
             rowHolder.DOKill();
-            rowHolder.DOAnchorPosY(-Screen.height / KeyboardManager.Instance.Scale.y, 0.25f);
+            rowHolder.DOAnchorPos(new Vector2(0, -(Screen.height / KeyboardManager.Instance.Scale.y) / 2 + rowHolder.rect.height / 2 + keyboardKeyboardModel.show_margin), 0.25f);
         }
 
         public KeyboardBoard Setup(string language, KeyboardKeyboardModel keyboardKeyboardModel)
         {
             this.language = language;
             this.keyboardKeyboardModel = keyboardKeyboardModel;
+
+            name = "KEYBOARDMANAGER";
 
             SetSpace();
             SetMargin();

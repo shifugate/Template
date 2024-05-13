@@ -9,6 +9,7 @@ using Assets._Scripts.Util;
 using TMPro;
 using Assets._Scripts.Manager.Keyboard.Data;
 using System.Collections;
+using Assets._Scripts.Manager.Language;
 
 namespace Assets._Scripts.Manager.Keyboard
 {
@@ -69,12 +70,53 @@ namespace Assets._Scripts.Manager.Keyboard
 
         public Vector3 Scale { get { return canvas.transform.localScale; } }
 
+        private void Update()
+        {
+            UpdateInput();
+        }
+
+        private void UpdateInput()
+        {
+            if (Input.GetMouseButtonDown(0) && !ScreenUtil.PointerOverUIName("KEYBOARDMANAGER"))
+                inputField = null;
+        }
+
         private void Initialize(InitializerManager manager)
         {
             transform.SetParent(manager.transform);
 
             SetProperties();
             SetKeyboards();
+        }
+
+        private IEnumerator FocusCR()
+        {
+            while (keyboardDatas != null && keyboardDatas.Count > 0)
+            {
+                keyboardDatas.RemoveAll(data => data?.inputField == null);
+
+                foreach (KeyboardData keyboardData in keyboardDatas)
+                {
+                    if (keyboardData.inputField.isFocused && inputField != keyboardData.inputField)
+                    {
+                        inputField = keyboardData.inputField;
+
+                        if (inputField != null)
+                            foreach (KeyboardBoard keyboard in keyboardBoards)
+                                if (keyboard.KeyboardKeyboardModel.type == keyboardData.type && keyboard.KeyboardKeyboardModel.language == LanguageManager.Instance.Language)
+                                    keyboard.Show();
+                                else
+                                    keyboard.Hide();
+                    }
+                    else if (inputField == null)
+                    {
+                        foreach (KeyboardBoard keyboard in keyboardBoards)
+                            keyboard.Hide();
+                    }
+                }
+
+                yield return null;
+            }
         }
 
         private void SetProperties()
@@ -105,8 +147,9 @@ namespace Assets._Scripts.Manager.Keyboard
 #if UNITY_STANDALONE
                     try
                     {
-                        KeyboardKeyboardModel keyboardKeyboardModel = JsonConvert.DeserializeObject<KeyboardKeyboardModel>(File.ReadAllText($"{Application.streamingAssetsPath}/Manager/Keyboard/Type/{type}_{content.Key}.json"));
+                        KeyboardKeyboardModel keyboardKeyboardModel = JsonConvert.DeserializeObject<KeyboardKeyboardModel>(File.ReadAllText($"{Application.streamingAssetsPath}/Manager/Keyboard/_{content.Key}/{type}.json"));
                         keyboardKeyboardModel.type = (Type)type;
+                        keyboardKeyboardModel.language = content.Key;
 
                         SetKeyboardData(content.Value, keyboardKeyboardModel);
 
@@ -119,8 +162,9 @@ namespace Assets._Scripts.Manager.Keyboard
 #elif UNITY_ANDROID || UNITY_IOS
                     try
                     {
-                        KeyboardKeyboardModel keyboardKeyboardModel = JsonConvert.DeserializeObject<KeyboardKeyboardModel>(Resources.Load<TextAsset>($"Manager/Keyboard/Type/{type}_{content.Key}").text);
+                        KeyboardKeyboardModel keyboardKeyboardModel = JsonConvert.DeserializeObject<KeyboardKeyboardModel>(Resources.Load<TextAsset>($"Manager/Keyboard/_{content.Key}/{type}").text);
                         keyboardKeyboardModel.type = (Type)type;
+                        keyboardKeyboardModel.language = content.Key;
 
                         SetKeyboardData(content.Value, keyboardKeyboardModel);
 
@@ -306,9 +350,9 @@ namespace Assets._Scripts.Manager.Keyboard
             {
 #if UNITY_STANDALONE
                 texture = new Texture2D(2, 2);
-                texture.LoadImage(File.ReadAllBytes($"{Application.streamingAssetsPath}/Manager/Keyboard/Texture/{spriteModel.file}"));
+                texture.LoadImage(File.ReadAllBytes($"{Application.streamingAssetsPath}/Manager/Keyboard/__Texture/{spriteModel.file}"));
 #elif UNITY_ANDROID || UNITY_IOS
-                texture = Resources.Load<Texture2D>($"Manager/Keyboard/Texture/{Path.GetFileNameWithoutExtension(spriteModel.file)}");
+                texture = Resources.Load<Texture2D>($"Manager/Keyboard/__Texture/{Path.GetFileNameWithoutExtension(spriteModel.file)}");
 #endif
 
                 if (spriteModel.margin == null || spriteModel.margin.Count != 4)
@@ -330,31 +374,6 @@ namespace Assets._Scripts.Manager.Keyboard
                 return;
 
             sprites.Add(spriteModel.file, sprite);
-        }
-
-        private IEnumerator FocusCR()
-        {
-            while (keyboardDatas != null && keyboardDatas.Count > 0)
-            {
-                keyboardDatas.RemoveAll(data => data?.inputField == null);
-
-                foreach (KeyboardData keyboardData in keyboardDatas)
-                {
-                    if (keyboardData.inputField.isFocused && inputField != keyboardData.inputField)
-                    {
-                        inputField = keyboardData.inputField;
-
-                        if (inputField != null)
-                            foreach (KeyboardBoard keyboard in keyboardBoards)
-                                if (keyboard.KeyboardKeyboardModel.type == keyboardData.type)
-                                    keyboard.Show();
-                                else
-                                    keyboard.Hide();
-                    }
-                }
-
-                yield return null;
-            }
         }
 
         public Sprite GetSprite(KeyboardSpriteModel spriteModel)
