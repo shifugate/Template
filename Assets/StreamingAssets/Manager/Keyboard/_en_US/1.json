@@ -51,8 +51,8 @@
 				{
 					"normal": "e",
 					"shifted": "E",
-					"normal_hold": ["é, è, ê"],
-					"shifted_hold": ["É, È, Ê"],
+					"normal_hold": ["é", "è", "ê"],
+					"shifted_hold": ["É", "È", "Ê"],
 				},
 			],
 		},

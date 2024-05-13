@@ -1,5 +1,6 @@
 ﻿using Assets._Scripts.Manager.Keyboard.Model;
 using Assets._Scripts.Util;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +10,11 @@ namespace Assets._Scripts.Manager.Keyboard.Key
     public class KeyboardKey : MonoBehaviour
     {
         [SerializeField]
+        private KeyboardHoldKey keyboardHoldKey;
+        [SerializeField]
         private RectTransform rectTransform;
+        [SerializeField]
+        private RectTransform holdHolder;
         [SerializeField]
         private Image releaseImage;
         [SerializeField]
@@ -19,7 +24,13 @@ namespace Assets._Scripts.Manager.Keyboard.Key
         [SerializeField]
         private TextMeshProUGUI keyText;
 
+        public string Key { get { return keyText.text; } }
+
         private KeyboardKeyModel keyboardKeyModel;
+
+        private List<string> holdList;
+
+        private KeyboardHoldKey holdKey;
 
         private Color fontReleaseColor;
         private Color fontPressColor;
@@ -37,14 +48,41 @@ namespace Assets._Scripts.Manager.Keyboard.Key
         private void UpdateInput()
         {
             if (!press)
+            {
+                foreach(Transform transform in holdHolder)
+                    Destroy(transform.gameObject);
+
+                return;
+            }
+
+            time += Time.deltaTime;
+
+            if (time <= keyboardKeyModel.click_time)
                 return;
 
-            if (Input.GetMouseButtonUp(0))
-            {
-                press = false;
+            holdList = keyboardKeyModel.normal_hold;
 
-                if (time <= keyboardKeyModel.click_time)
-                    SystemUtil.Log(GetType(), $"{keyText.text} : {Time.deltaTime}");
+            if (holdList != null && holdList.Count > 0 && holdHolder.childCount == 0)
+                foreach(string key in holdList) 
+                    Instantiate(keyboardHoldKey, holdHolder).Setup(keyboardKeyModel, key);
+
+            GameObject keyObject = ScreenUtil.GetUIOverPointerByName("KEYBOARDMANAGER_KEY");
+
+            if (keyObject != null)
+            {
+                KeyboardHoldKey holdKey = keyObject.GetComponent<KeyboardHoldKey>();
+
+                if (this.holdKey != null && this.holdKey != holdKey)
+                    this.holdKey.OutKey();
+
+                if (holdKey != null && this.holdKey != holdKey)
+                    holdKey.OverKey();
+
+                this.holdKey = holdKey;
+            }
+            else if (holdKey != null)
+            {
+                holdKey.OutKey();
             }
         }
 
@@ -97,16 +135,35 @@ namespace Assets._Scripts.Manager.Keyboard.Key
             return this;
         }
 
-        public void UpdateKey()
+        public void OverKey()
         {
-            time += Time.deltaTime;
-
             if (press)
                 return;
 
             press = true;
 
+            keyText.color = fontPressColor;
+            pressImage.color = new Color(1, 1, 1, 1);
+
             time = 0;
+        }
+
+        public void OutKey()
+        {
+            if (!press)
+                return;
+
+            press = false;
+
+            keyText.color = fontReleaseColor;
+            pressImage.color = new Color(1, 1, 1, 0);
+
+            if (time <= keyboardKeyModel.click_time)
+                SystemUtil.Log(GetType(), Key);
+            else if (holdKey != null)
+                SystemUtil.Log(GetType(), holdKey.Key);
+
+            holdKey = null;
         }
     }
 }

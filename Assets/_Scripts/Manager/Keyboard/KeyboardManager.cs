@@ -70,6 +70,8 @@ namespace Assets._Scripts.Manager.Keyboard
 
         private TMP_InputField inputField;
 
+        private GameObject keyObject;
+
         public Vector3 Scale { get { return canvas.transform.localScale; } }
 
         private void Update()
@@ -82,20 +84,33 @@ namespace Assets._Scripts.Manager.Keyboard
             if (inputField == null)
                 return;
 
-            GameObject keyObject = ScreenUtil.GetUIOverPointerByName("KEYBOARDMANAGER_KEY");
+            if (Input.GetMouseButtonDown(0) && keyObject == null)
+                keyObject = ScreenUtil.GetUIOverPointerByName("KEYBOARDMANAGER_KEY");
+
+            if (Input.GetMouseButtonUp(0) && keyObject != null)
+            {
+                KeyboardKey keyboardKey = keyObject.GetComponent<KeyboardKey>();
+
+                if (keyboardKey != null)
+                    keyboardKey.OutKey();
+
+                keyObject = null;
+
+                return;
+            }
 
             if (Input.GetMouseButtonDown(0) && !ScreenUtil.PointerOverUIName("KEYBOARDMANAGER") && keyObject == null)
             {
                 inputField = null;
             }
-            else
+            else if (Input.GetMouseButton(0))
             {
-                if (keyObject != null && Input.GetMouseButton(0))
+                if (keyObject != null)
                 {
                     KeyboardKey keyboardKey = keyObject.GetComponent<KeyboardKey>();
 
                     if (keyboardKey != null)
-                        keyboardKey.UpdateKey();
+                        keyboardKey.OverKey();
                 }
 
                 inputField.Select();
@@ -210,6 +225,12 @@ namespace Assets._Scripts.Manager.Keyboard
             if (keyboardKeyboardModel.font_press_color == null)
                 keyboardKeyboardModel.font_press_color = keyboardModel.font_press_color;
 
+            if (keyboardKeyboardModel.font_release_hold_color == null)
+                keyboardKeyboardModel.font_release_hold_color = keyboardModel.font_release_hold_color;
+
+            if (keyboardKeyboardModel.font_press_hold_color == null)
+                keyboardKeyboardModel.font_press_hold_color = keyboardModel.font_press_hold_color;
+
             if (keyboardKeyboardModel.font_lock_color == null)
                 keyboardKeyboardModel.font_lock_color = keyboardModel.font_lock_color;
 
@@ -218,6 +239,12 @@ namespace Assets._Scripts.Manager.Keyboard
 
             if (keyboardKeyboardModel.press_key == null)
                 keyboardKeyboardModel.press_key = keyboardModel.press_key;
+
+            if (keyboardKeyboardModel.release_hold_key == null)
+                keyboardKeyboardModel.release_hold_key = keyboardModel.release_hold_key;
+
+            if (keyboardKeyboardModel.press_hold_key == null)
+                keyboardKeyboardModel.press_hold_key = keyboardModel.press_hold_key;
 
             if (keyboardKeyboardModel.lock_key == null)
                 keyboardKeyboardModel.lock_key = keyboardModel.lock_key;
@@ -272,6 +299,12 @@ namespace Assets._Scripts.Manager.Keyboard
             if (keyboardRowModel.font_press_color == null)
                 keyboardRowModel.font_press_color = keyboardKeyboardModel.font_press_color;
 
+            if (keyboardRowModel.font_release_hold_color == null)
+                keyboardRowModel.font_release_hold_color = keyboardKeyboardModel.font_release_hold_color;
+
+            if (keyboardRowModel.font_press_hold_color == null)
+                keyboardRowModel.font_press_hold_color = keyboardKeyboardModel.font_press_hold_color;
+
             if (keyboardRowModel.font_lock_color == null)
                 keyboardRowModel.font_lock_color = keyboardKeyboardModel.font_lock_color;
 
@@ -280,6 +313,12 @@ namespace Assets._Scripts.Manager.Keyboard
 
             if (keyboardRowModel.press_key == null)
                 keyboardRowModel.press_key = keyboardKeyboardModel.press_key;
+
+            if (keyboardRowModel.release_hold_key == null)
+                keyboardRowModel.release_hold_key = keyboardKeyboardModel.release_hold_key;
+
+            if (keyboardRowModel.press_hold_key == null)
+                keyboardRowModel.press_hold_key = keyboardKeyboardModel.press_hold_key;
 
             if (keyboardRowModel.lock_key == null)
                 keyboardRowModel.lock_key = keyboardKeyboardModel.lock_key;
@@ -325,6 +364,12 @@ namespace Assets._Scripts.Manager.Keyboard
             if (keyboardKeyModel.font_press_color == null)
                 keyboardKeyModel.font_press_color = keyboardRowModel.font_press_color;
 
+            if (keyboardKeyModel.font_release_hold_color == null)
+                keyboardKeyModel.font_release_hold_color = keyboardRowModel.font_release_hold_color;
+
+            if (keyboardKeyModel.font_press_hold_color == null)
+                keyboardKeyModel.font_press_hold_color = keyboardRowModel.font_press_hold_color;
+
             if (keyboardKeyModel.font_lock_color == null)
                 keyboardKeyModel.font_lock_color = keyboardRowModel.font_lock_color;
 
@@ -333,6 +378,12 @@ namespace Assets._Scripts.Manager.Keyboard
 
             if (keyboardKeyModel.press_key == null)
                 keyboardKeyModel.press_key = keyboardRowModel.press_key;
+
+            if (keyboardKeyModel.release_hold_key == null)
+                keyboardKeyModel.release_hold_key = keyboardRowModel.release_hold_key;
+
+            if (keyboardKeyModel.press_hold_key == null)
+                keyboardKeyModel.press_hold_key = keyboardRowModel.press_hold_key;
 
             if (keyboardKeyModel.lock_key == null)
                 keyboardKeyModel.lock_key = keyboardRowModel.lock_key;
