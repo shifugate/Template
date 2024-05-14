@@ -12,6 +12,7 @@ using System.Collections;
 using Assets._Scripts.Manager.Language;
 using Assets._Scripts.Manager.Keyboard.Key;
 using UnityEngine.Events;
+using Assets._Scripts.Manager.Keyboard.Event;
 
 namespace Assets._Scripts.Manager.Keyboard
 {
@@ -687,6 +688,8 @@ namespace Assets._Scripts.Manager.Keyboard
 
                     break;
                 case Key.Enter:
+                    KeyboardManagerEvent.OnEnter?.Invoke();
+
                     onKeyboardManagerUpdateKey?.Invoke();
 
                     UpdateFocus();
