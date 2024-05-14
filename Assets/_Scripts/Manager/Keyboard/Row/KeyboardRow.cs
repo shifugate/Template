@@ -28,12 +28,19 @@ namespace Assets._Scripts.Manager.Keyboard.Row
 
         private void AddListener()
         {
+            KeyboardManager.Instance.onKeyboardManagerUpdateChange.AddListener(OnKeyboardManagerUpdateChange);
             KeyboardManager.Instance.onKeyboardManagerUpdateLevel.AddListener(OnKeyboardManagerUpdateLevel);
         }
 
         private void RemoveListener()
         {
+            KeyboardManager.Instance.onKeyboardManagerUpdateChange.RemoveListener(OnKeyboardManagerUpdateChange);
             KeyboardManager.Instance.onKeyboardManagerUpdateLevel.RemoveListener(OnKeyboardManagerUpdateLevel);
+        }
+
+        private void OnKeyboardManagerUpdateChange()
+        {
+            SetContent();
         }
 
         private void OnKeyboardManagerUpdateLevel()

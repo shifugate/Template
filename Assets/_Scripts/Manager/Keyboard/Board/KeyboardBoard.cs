@@ -1,6 +1,8 @@
 ﻿using Assets._Scripts.Manager.Keyboard.Model;
 using Assets._Scripts.Manager.Keyboard.Row;
 using DG.Tweening;
+using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,6 +28,8 @@ namespace Assets._Scripts.Manager.Keyboard.Board
         public KeyboardKeyboardModel KeyboardKeyboardModel { get { return keyboardKeyboardModel; } }
 
         private bool showing = true;
+
+        private Coroutine hideCR;
 
         private void SetSpace()
         {
@@ -76,7 +80,7 @@ namespace Assets._Scripts.Manager.Keyboard.Board
             }
         }
 
-        private void SetShow()
+        private void SetShow(Action completeCallback)
         {
             if (showing)
                 return;
@@ -100,6 +104,8 @@ namespace Assets._Scripts.Manager.Keyboard.Board
                     SetShowBottom();
                     break;
             }
+
+            completeCallback?.Invoke();
         }
 
         private void SetStartLeft()
@@ -158,6 +164,13 @@ namespace Assets._Scripts.Manager.Keyboard.Board
             rowHolder.DOAnchorPos(new Vector2(0, -(Screen.height / KeyboardManager.Instance.Scale.y) / 2 + rowHolder.rect.height / 2 + keyboardKeyboardModel.show_margin), 0.25f);
         }
 
+        private IEnumerator HideCR()
+        {
+            yield return null;
+
+            SetStart();
+        }
+
         public KeyboardBoard Setup(string language, KeyboardKeyboardModel keyboardKeyboardModel)
         {
             this.language = language;
@@ -174,14 +187,23 @@ namespace Assets._Scripts.Manager.Keyboard.Board
             return this;
         }
 
-        public void Show()
+        public void Show(Action completeCallback)
         {
-            SetShow();
+            if (hideCR != null)
+                StopCoroutine(hideCR);
+
+            SetShow(completeCallback);
         }
 
         public void Hide()
         {
-            SetStart();
+            if (!gameObject.activeInHierarchy)
+                return;
+
+            if (hideCR != null)
+                StopCoroutine(hideCR);
+
+            hideCR = StartCoroutine(HideCR());
         }
     }
 }

@@ -15,6 +15,7 @@ using UnityEngine.Events;
 
 namespace Assets._Scripts.Manager.Keyboard
 {
+    public class KeyboardManagerUpdateChange : UnityEvent { }
     public class KeyboardManagerUpdateKey : UnityEvent { }
     public class KeyboardManagerUpdateLevel : UnityEvent { }
 
@@ -71,6 +72,7 @@ namespace Assets._Scripts.Manager.Keyboard
         [SerializeField]
         private KeyboardBoard keyboardBoard;
 
+        public KeyboardManagerUpdateChange onKeyboardManagerUpdateChange = new KeyboardManagerUpdateChange();
         public KeyboardManagerUpdateKey onKeyboardManagerUpdateKey = new KeyboardManagerUpdateKey();
         public KeyboardManagerUpdateLevel onKeyboardManagerUpdateLevel = new KeyboardManagerUpdateLevel();
 
@@ -88,8 +90,6 @@ namespace Assets._Scripts.Manager.Keyboard
         private TMP_InputField inputField;
 
         private GameObject keyObject;
-
-        private KeyboardKey keyboardKey;
 
         public Vector3 Scale { get { return canvas.transform.localScale; } }
 
@@ -176,11 +176,22 @@ namespace Assets._Scripts.Manager.Keyboard
                         inputField = keyboardData.inputField;
 
                         if (inputField != null)
+                        {
                             foreach (KeyboardBoard keyboard in keyboardBoards)
+                            {
                                 if (keyboard.KeyboardKeyboardModel.type == keyboardData.type && keyboard.KeyboardKeyboardModel.language == LanguageManager.Instance.Language)
-                                    keyboard.Show();
+                                    keyboard.Show(() =>
+                                    {
+                                        shifted = false;
+                                        shiftedLocked = false;
+                                        level = 0;
+
+                                        onKeyboardManagerUpdateChange?.Invoke();
+                                    });
                                 else
                                     keyboard.Hide();
+                            }
+                        }
                     }
                     else if (inputField == null)
                     {
