@@ -16,6 +16,38 @@ namespace Assets._Scripts.Manager.Keyboard.Row
 
         private KeyboardRowModel keyboardRowModel;
 
+        private void Awake()
+        {
+            AddListener();
+        }
+
+        private void OnDestroy()
+        {
+            RemoveListener();
+        }
+
+        private void AddListener()
+        {
+            KeyboardManager.Instance.onKeyboardManagerUpdateLevel.AddListener(OnKeyboardManagerUpdateLevel);
+        }
+
+        private void RemoveListener()
+        {
+            KeyboardManager.Instance.onKeyboardManagerUpdateLevel.RemoveListener(OnKeyboardManagerUpdateLevel);
+        }
+
+        private void OnKeyboardManagerUpdateLevel()
+        {
+            SetContent();
+        }
+
+        private void SetContent() 
+        {
+            SetSpace();
+            SetMargin();
+            SetKeys();
+        }
+
         private void SetSpace()
         {
             horizontalLayoutGroup.spacing = keyboardRowModel.space_row;
@@ -28,17 +60,18 @@ namespace Assets._Scripts.Manager.Keyboard.Row
 
         private void SetKeys()
         {
+            foreach (Transform transform in rowHolder)
+                Destroy(transform.gameObject);
+
             foreach (KeyboardKeyModel keyboardKeyModel in keyboardRowModel.keys)
-                Instantiate(keyboardKey, rowHolder).Setup(keyboardKeyModel);
+                Instantiate(keyboardKey, rowHolder).Setup(KeyboardManager.Instance.GetLevel(keyboardKeyModel));
         }
 
         public KeyboardRow Setup(KeyboardRowModel keyboardRowModel)
         {
             this.keyboardRowModel = keyboardRowModel;
 
-            SetSpace();
-            SetMargin();
-            SetKeys();
+            SetContent();
 
             return this;
         }
