@@ -6,5 +6,6 @@ namespace Assets._Scripts.Manager.Keyboard.Data
     {
         public TMP_InputField inputField;
         public KeyboardManager.Type type;
+        public int tabIndex;
     }
 }

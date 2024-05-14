@@ -712,6 +712,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
+  tabIndex: 1
 --- !u!114 &945202289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1105,6 +1106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  tabIndex: 0
 --- !u!1 &1468955611
 GameObject:
   m_ObjectHideFlags: 0

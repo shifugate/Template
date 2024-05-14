@@ -277,6 +277,10 @@ namespace Assets._Scripts.Manager.Keyboard.Key
                 {
                     KeyboardManager.Instance.KeyClick(KeyboardManager.Key.Delete);
                 }
+                else if (keyboardKeyLevelModel.tab)
+                {
+                    KeyboardManager.Instance.KeyClick(KeyboardManager.Key.Tab);
+                }
                 else if (keyboardKeyLevelModel.swap)
                 {
                     KeyboardManager.Instance.KeyClick(KeyboardManager.Key.Swap, null, keyboardKeyLevelModel.level);

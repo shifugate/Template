@@ -9,6 +9,8 @@ namespace Assets._Scripts.Manager.Keyboard.Map
     {
         [SerializeField]
         private KeyboardManager.Type type;
+        [SerializeField]
+        private int tabIndex;
 
         private TMP_InputField inputField;
 
@@ -26,7 +28,8 @@ namespace Assets._Scripts.Manager.Keyboard.Map
             KeyboardManager.Instance.AddInputField(new KeyboardData 
             {
                 type = type,
-                inputField = inputField
+                inputField = inputField,
+                tabIndex = tabIndex
             });
         }
     }

@@ -63,6 +63,7 @@ namespace Assets._Scripts.Manager.Keyboard
             ShiftLock,
             Swap,
             Delete,
+            Tab,
         }
 
         [SerializeField]
@@ -101,6 +102,8 @@ namespace Assets._Scripts.Manager.Keyboard
 
         private int level;
         public int Level { get { return level; } }
+
+        private int tabIndex;
 
         private void Update()
         {
@@ -150,6 +153,11 @@ namespace Assets._Scripts.Manager.Keyboard
             if (inputField == null) 
                 return;
 
+            UpdateFocus(inputField);
+        }
+
+        private void UpdateFocus(TMP_InputField inputField)
+        {
             inputField.Select();
             inputField.ActivateInputField();
             inputField.caretPosition = inputField.text.Length;
@@ -173,6 +181,8 @@ namespace Assets._Scripts.Manager.Keyboard
                 {
                     if (keyboardData.inputField.isFocused && inputField != keyboardData.inputField)
                     {
+                        tabIndex = keyboardDatas.FindIndex(x => x.inputField == keyboardData.inputField);
+
                         inputField = keyboardData.inputField;
 
                         if (inputField != null)
@@ -585,6 +595,7 @@ namespace Assets._Scripts.Manager.Keyboard
         public void SetInputFields(List<KeyboardData> data)
         {
             keyboardDatas = data;
+            keyboardDatas.Sort((x, y) => x.tabIndex.CompareTo(y.tabIndex));
 
             if (focusCR != null)
                 StopCoroutine(focusCR);
@@ -604,6 +615,8 @@ namespace Assets._Scripts.Manager.Keyboard
 
             if (!keyboardDatas.Exists(kData => kData.inputField == data.inputField))
                 keyboardDatas.Add(data);
+
+            keyboardDatas.Sort((x, y) => x.tabIndex.CompareTo(y.tabIndex));
 
             if (focusCR != null)
                 StopCoroutine(focusCR);
@@ -661,6 +674,8 @@ namespace Assets._Scripts.Manager.Keyboard
 
                     onKeyboardManagerUpdateKey?.Invoke();
 
+                    UpdateFocus();
+
                     break;
                 case Key.ShiftLock:
                     shifted = false;
@@ -668,9 +683,13 @@ namespace Assets._Scripts.Manager.Keyboard
 
                     onKeyboardManagerUpdateKey?.Invoke();
 
+                    UpdateFocus();
+
                     break;
                 case Key.Enter:
                     onKeyboardManagerUpdateKey?.Invoke();
+
+                    UpdateFocus();
 
                     break;
                 case Key.Swap:
@@ -684,6 +703,22 @@ namespace Assets._Scripts.Manager.Keyboard
 
                     onKeyboardManagerUpdateLevel?.Invoke();
 
+                    UpdateFocus();
+
+                    break;
+                case Key.Tab:
+                    keyboardDatas.RemoveAll(data => data?.inputField == null);
+
+                    if (keyboardDatas.Count <= 1)
+                        break;
+
+                    tabIndex++;
+
+                    if (tabIndex >= keyboardDatas.Count)
+                        tabIndex = 0;
+
+                    UpdateFocus(keyboardDatas[tabIndex].inputField);
+
                     break;
                 case Key.Delete:
                     shifted = false;
@@ -692,6 +727,8 @@ namespace Assets._Scripts.Manager.Keyboard
                         inputField.text = inputField.text.Substring(0, inputField.text.Length -1);
 
                     onKeyboardManagerUpdateKey?.Invoke();
+
+                    UpdateFocus();
 
                     break;
                 case Key.Text: 
@@ -702,10 +739,10 @@ namespace Assets._Scripts.Manager.Keyboard
 
                     onKeyboardManagerUpdateKey?.Invoke();
 
+                    UpdateFocus();
+
                     break;
             }
-
-            UpdateFocus();
         }
 
         public KeyboardKeyLevelModel GetLevel(KeyboardKeyModel keyboardKeyModel)

@@ -13,6 +13,7 @@ namespace Assets._Scripts.Manager.Keyboard.Model
         public bool enter;
         public bool swap;
         public bool delete;
+        public bool tab;
         public int level;
     }
 }
