@@ -220,7 +220,7 @@ namespace Assets._Scripts.Manager.Keyboard.Key
 
         private void SetText()
         {
-            keyText.text = keyboardKeyLevelModel.normal;
+            keyText.text = KeyboardManager.Instance.Shifted || KeyboardManager.Instance.ShiftedLocked ? keyboardKeyLevelModel.shifted : keyboardKeyLevelModel.normal;
             keyText.color = fontReleaseColor;
         }
 
