@@ -1,9 +1,27 @@
 {
+	"font_release_color": "#CCEE00",
+	"font_press_color": "#CC33CC",
+	"space_row": 30,
+	"space_key": 30,
+	"margin_x": 20,
+	"margin_y": 30,
 	"rows": 
 	[
 		{
+			"font_release_color": "#FF0000",
+			"font_press_color": "#FF33CC",
+			"space_key": 40,
 			"keys":
 			[
+				{
+					"level0": 
+					{
+						"normal": "a",
+						"shifted": "A",
+						"normal_hold": ["á", "à", "â", "ã"],
+						"shifted_hold": ["Á", "À", "Â", "Ã"],
+					},
+				},
 				{
 					"level0": 
 					{
@@ -14,6 +32,8 @@
 				{
 					"level0": 
 					{
+						"font_release_color": "#FFCC00",
+						"font_press_color": "#FF3398",
 						"normal": "1",
 						"shifted": "!",
 					},
@@ -21,6 +41,8 @@
 				{
 					"level0": 
 					{
+						"font_release_color": "#FFCC00",
+						"font_press_color": "#FF3398",
 						"normal": "2",
 						"shifted": "\"",
 					},
@@ -28,6 +50,8 @@
 				{
 					"level0": 
 					{
+						"font_release_color": "#FFCC00",
+						"font_press_color": "#FF3398",
 						"normal": "3",
 						"shifted": "#",
 					},
@@ -63,6 +87,8 @@
 				{
 					"level0": 
 					{
+						"font_release_color": "#FFCC00",
+						"font_press_color": "#FF3398",
 						"normal": "3",
 						"shifted": "#",
 					},

@@ -322,10 +322,10 @@ namespace Assets._Scripts.Manager.Keyboard
             if (keyboardKeyboardModel.space_key == 0)
                 keyboardKeyboardModel.space_key = keyboardModel.space_key;
 
-            if (keyboardKeyboardModel.margin_y == 0)
-                keyboardKeyboardModel.margin_y = keyboardModel.margin_y;
-
             if (keyboardKeyboardModel.margin_x == 0)
+                keyboardKeyboardModel.margin_x = keyboardModel.margin_x;
+
+            if (keyboardKeyboardModel.margin_y == 0)
                 keyboardKeyboardModel.margin_y = keyboardModel.margin_y;
 
             if (keyboardKeyboardModel.start_at == null)
@@ -342,6 +342,8 @@ namespace Assets._Scripts.Manager.Keyboard
 
             SetSprite(keyboardKeyboardModel.release_key);
             SetSprite(keyboardKeyboardModel.press_key);
+            SetSprite(keyboardKeyboardModel.release_hold_key);
+            SetSprite(keyboardKeyboardModel.press_hold_key);
             SetSprite(keyboardKeyboardModel.lock_key);
             SetSprite(keyboardKeyboardModel.background);
 
@@ -396,10 +398,10 @@ namespace Assets._Scripts.Manager.Keyboard
             if (keyboardRowModel.space_key == 0)
                 keyboardRowModel.space_key = keyboardKeyboardModel.space_key;
 
-            if (keyboardRowModel.margin_y == 0)
-                keyboardRowModel.margin_y = keyboardKeyboardModel.margin_y;
-
             if (keyboardRowModel.margin_x == 0)
+                keyboardRowModel.margin_x = keyboardKeyboardModel.margin_x;
+
+            if (keyboardRowModel.margin_y == 0)
                 keyboardRowModel.margin_y = keyboardKeyboardModel.margin_y;
 
             if (keyboardRowModel.click_time == 0)
@@ -407,6 +409,8 @@ namespace Assets._Scripts.Manager.Keyboard
 
             SetSprite(keyboardRowModel.release_key);
             SetSprite(keyboardRowModel.press_key);
+            SetSprite(keyboardRowModel.release_hold_key);
+            SetSprite(keyboardRowModel.press_hold_key);
             SetSprite(keyboardRowModel.lock_key);
             SetSprite(keyboardRowModel.background);
 
@@ -461,10 +465,10 @@ namespace Assets._Scripts.Manager.Keyboard
             if (keyboardKeyModel.space_key == 0)
                 keyboardKeyModel.space_key = keyboardRowModel.space_key;
 
-            if (keyboardKeyModel.margin_y == 0)
-                keyboardKeyModel.margin_y = keyboardRowModel.margin_y;
-
             if (keyboardKeyModel.margin_x == 0)
+                keyboardKeyModel.margin_x = keyboardRowModel.margin_x;
+
+            if (keyboardKeyModel.margin_y == 0)
                 keyboardKeyModel.margin_y = keyboardRowModel.margin_y;
 
             if (keyboardKeyModel.click_time == 0)
@@ -472,6 +476,8 @@ namespace Assets._Scripts.Manager.Keyboard
 
             SetSprite(keyboardKeyModel.release_key);
             SetSprite(keyboardKeyModel.press_key);
+            SetSprite(keyboardKeyModel.release_hold_key);
+            SetSprite(keyboardKeyModel.press_hold_key);
             SetSprite(keyboardKeyModel.lock_key);
             SetSprite(keyboardKeyModel.background);
 
@@ -527,10 +533,10 @@ namespace Assets._Scripts.Manager.Keyboard
             if (keyboardKeyLevelModel.space_key == 0)
                 keyboardKeyLevelModel.space_key = keyboardKeyModel.space_key;
 
-            if (keyboardKeyLevelModel.margin_y == 0)
-                keyboardKeyLevelModel.margin_y = keyboardKeyModel.margin_y;
-
             if (keyboardKeyLevelModel.margin_x == 0)
+                keyboardKeyLevelModel.margin_x = keyboardKeyModel.margin_x;
+
+            if (keyboardKeyLevelModel.margin_y == 0)
                 keyboardKeyLevelModel.margin_y = keyboardKeyModel.margin_y;
 
             if (keyboardKeyLevelModel.click_time == 0)
@@ -538,6 +544,8 @@ namespace Assets._Scripts.Manager.Keyboard
 
             SetSprite(keyboardKeyLevelModel.release_key);
             SetSprite(keyboardKeyLevelModel.press_key);
+            SetSprite(keyboardKeyLevelModel.release_hold_key);
+            SetSprite(keyboardKeyLevelModel.press_hold_key);
             SetSprite(keyboardKeyLevelModel.lock_key);
             SetSprite(keyboardKeyLevelModel.background);
         }
