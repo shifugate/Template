@@ -3,6 +3,7 @@
 	"font_press_color": "#FFFFFF",
 	"font_release_hold_color": "#0A1B35",
 	"font_press_hold_color": "#FFFFFF",
+	"font_lock_color": "#FFFFFF",
 	"release_key": 
 	{ 
 		"file": "release_key.png",
