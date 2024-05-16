@@ -701,16 +701,25 @@ namespace Assets._Scripts.Manager.Keyboard
                         if (split2[1].Equals(text))
                         {
                             character = split1[1];
+                            accent = null;
 
                             break;
                         }
                     }
                 }
 
+                if (accent != null)
+                    character += text;
+
                 shifted = false;
 
                 if (inputField != null)
+                {
+                    if (!string.IsNullOrEmpty(character) && !inputField.fontAsset.HasCharacters(character, out uint[] missing, false, true))
+                        character = "";
+
                     inputField.text += character;
+                }
 
                 character = null;
                 accent = null;
@@ -808,7 +817,12 @@ namespace Assets._Scripts.Manager.Keyboard
                     shifted = false;
 
                     if (inputField != null)
+                    {
+                        if (!string.IsNullOrEmpty(text) && !inputField.fontAsset.HasCharacters(text, out uint[] missing, false, true))
+                            text = "";
+
                         inputField.text += text;
+                    }
 
                     onKeyboardManagerUpdateKey?.Invoke();
 

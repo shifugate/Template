@@ -1,5 +1,6 @@
 ﻿using Assets._Scripts.Manager.Keyboard.Model;
 using Assets._Scripts.Util;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -220,7 +221,16 @@ namespace Assets._Scripts.Manager.Keyboard.Key
 
         private void SetText()
         {
-            keyText.text = KeyboardManager.Instance.Shifted || KeyboardManager.Instance.ShiftedLocked ? KeyboardKeyModel.shifted : KeyboardKeyModel.normal;
+            string text = KeyboardManager.Instance.Shifted || KeyboardManager.Instance.ShiftedLocked ? KeyboardKeyModel.shifted : KeyboardKeyModel.normal;
+
+            if (!string.IsNullOrEmpty(text) && !keyText.font.HasCharacters(text, out uint[] missing, false, true))
+            {
+                SystemUtil.Log(GetType(), $"Character not found in TMP Font Asset: {keyText.font.name} => {text} => missing: {JsonConvert.SerializeObject(missing)}");
+
+                text = "";
+            }
+            
+            keyText.text = text;
             keyText.color = fontReleaseColor;
         }
 
